@@ -1,0 +1,1 @@
+HtmlGrapheasApp is an application for the HtmlGrapheas library testing.
