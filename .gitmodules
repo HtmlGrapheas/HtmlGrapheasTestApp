@@ -1,0 +1,3 @@
+[submodule "HtmlGrapheasKamva"]
+	path = HtmlGrapheasKamva
+	url = git@bitbucket.org:htmlgrapheas/htmlgrapheaskamva.git
