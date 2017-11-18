@@ -84,7 +84,7 @@ include(${wxWidgets_USE_FILE})
 
 # Build test executables
 add_executable(${PROJECT_NAME}
-  ${PROJECT_SOURCE_DIR}/src/wx_hello_world.cpp
+  ${PROJECT_SOURCE_DIR}/src/wx_ex_hello_world.cpp
 )
 #target_compile_definitions(${PROJECT_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
 #target_include_directories(${PROJECT_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
