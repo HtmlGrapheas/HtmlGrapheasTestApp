@@ -24,20 +24,22 @@
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
 project(HtmlGrapheasApp_Desktop CXX)
+set(hga_EXE_NAME "html_grapheas")
 
 list(APPEND CMAKE_MODULE_PATH "${PROJECT_SOURCE_DIR}/cmake")
 
+set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
+
 # External libs directories.
 set(EXTERNAL_SRC_DIR "${PROJECT_SOURCE_DIR}/external")
-set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external")
-
-# Download all external libs with LibCMaker to this dir.
 if(NOT EXTERNAL_DOWNLOAD_DIR)
   set(EXTERNAL_DOWNLOAD_DIR "${PROJECT_SOURCE_DIR}/.downloads")
 endif()
-
-# Install all external libs with LibCMaker to this dir.
-set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
+if(NOT EXTERNAL_UNPACKED_SRC_DIR)
+  set(EXTERNAL_UNPACKED_SRC_DIR "${EXTERNAL_DOWNLOAD_DIR}/external_unpacked")
+endif()
+set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
+set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 #-----------------------------------------------------------------------
@@ -64,7 +66,7 @@ set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
 #-----------------------------------------------------------------------
 
 # Append our installed libs path to CMake's search path for find_*() commands.
-#list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
+#list(APPEND CMAKE_PREFIX_PATH "${EXTERNAL_INSTALL_DIR}")
 
 
 #-----------------------------------------------------------------------
@@ -79,13 +81,39 @@ include(${wxWidgets_USE_FILE})
 
 
 #-----------------------------------------------------------------------
+# HtmlGrapheasKamva
+#-----------------------------------------------------------------------
+
+add_subdirectory(HtmlGrapheasKamva "${PROJECT_BINARY_DIR}/HtmlGrapheasKamva")
+link_directories(${AGG_LIBRARY_DIRS}) # TODO: remove it
+
+#-----------------------------------------------------------------------
 # Link to the library
 #-----------------------------------------------------------------------
 
 # Build test executables
-add_executable(${PROJECT_NAME}
-  ${PROJECT_SOURCE_DIR}/src/wx_ex_hello_world.cpp
+add_executable(${hga_EXE_NAME}
+# wxWidgets examples.
+#  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_hello_world.cpp
+#  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
+#  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_custom_button.cpp
+#  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
+
+# wxAGG sources
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/main.cpp
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/LionWindow.cpp
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/AGGWindow.cpp
+  # Included in LionWindow.cpp
+  #${PROJECT_SOURCE_DIR}/src/wxAGG/parse_lion.cpp
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/LionWindow.h
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/AGGWindow.h
+  ${PROJECT_SOURCE_DIR}/src/wxAGG/PixelFormatConvertor.h
 )
-#target_compile_definitions(${PROJECT_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
-#target_include_directories(${PROJECT_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
-target_link_libraries(${PROJECT_NAME} ${wxWidgets_LIBRARIES})
+
+# HtmlGrapheasKamva
+target_link_libraries(${hga_EXE_NAME} htmlgrapheaskamva)
+
+# wxWidgets
+#target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
+#target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
+target_link_libraries(${hga_EXE_NAME} ${wxWidgets_LIBRARIES})

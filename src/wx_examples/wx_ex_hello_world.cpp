@@ -1,4 +1,5 @@
-// This code is from http://docs.wxwidgets.org/stable/overview_helloworld.html
+// This code is from:
+// http://docs.wxwidgets.org/stable/overview_helloworld.html
 
 // wxWidgets "Hello world" Program
 
