@@ -102,14 +102,24 @@ add_executable(${hga_EXE_NAME}
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
 # wxAGG sources
-  ${wxAGG_SRC_DIR}/src/main.cpp
-  ${wxAGG_SRC_DIR}/src/LionWindow.cpp
+#  ${wxAGG_SRC_DIR}/src/main.cpp
+#  ${wxAGG_SRC_DIR}/src/LionWindow.cpp
+#  ${wxAGG_SRC_DIR}/src/AGGWindow.cpp
+#  # Included in LionWindow.cpp
+#  #${wxAGG_SRC_DIR}/src/parse_lion.cpp
+#  ${wxAGG_SRC_DIR}/include/LionWindow.h
+#  ${wxAGG_SRC_DIR}/include/AGGWindow.h 
+#  ${wxAGG_SRC_DIR}/include/PixelFormatConvertor.h
+
+# HgaWindow
   ${wxAGG_SRC_DIR}/src/AGGWindow.cpp
-  # Included in LionWindow.cpp
-  #${wxAGG_SRC_DIR}/src/parse_lion.cpp
-  ${wxAGG_SRC_DIR}/include/LionWindow.h
   ${wxAGG_SRC_DIR}/include/AGGWindow.h
   ${wxAGG_SRC_DIR}/include/PixelFormatConvertor.h
+  ${PROJECT_SOURCE_DIR}/src/hga/main.cpp
+  ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.cpp
+  ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.h
+  ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.c
+  ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.h
 )
 target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
 
