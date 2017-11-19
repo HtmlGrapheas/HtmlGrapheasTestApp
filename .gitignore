@@ -34,3 +34,6 @@
 build/
 .cproject
 .project
+
+# Main project
+.downloads/
