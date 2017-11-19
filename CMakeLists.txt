@@ -91,6 +91,8 @@ link_directories(${AGG_LIBRARY_DIRS}) # TODO: remove it
 # Link to the library
 #-----------------------------------------------------------------------
 
+set(wxAGG_SRC_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva/external/wxAGG")
+
 # Build test executables
 add_executable(${hga_EXE_NAME}
 # wxWidgets examples.
@@ -100,15 +102,16 @@ add_executable(${hga_EXE_NAME}
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
 # wxAGG sources
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/main.cpp
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/LionWindow.cpp
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/AGGWindow.cpp
+  ${wxAGG_SRC_DIR}/src/main.cpp
+  ${wxAGG_SRC_DIR}/src/LionWindow.cpp
+  ${wxAGG_SRC_DIR}/src/AGGWindow.cpp
   # Included in LionWindow.cpp
-  #${PROJECT_SOURCE_DIR}/src/wxAGG/parse_lion.cpp
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/LionWindow.h
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/AGGWindow.h
-  ${PROJECT_SOURCE_DIR}/src/wxAGG/PixelFormatConvertor.h
+  #${wxAGG_SRC_DIR}/src/parse_lion.cpp
+  ${wxAGG_SRC_DIR}/include/LionWindow.h
+  ${wxAGG_SRC_DIR}/include/AGGWindow.h
+  ${wxAGG_SRC_DIR}/include/PixelFormatConvertor.h
 )
+target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
 
 # HtmlGrapheasKamva
 target_link_libraries(${hga_EXE_NAME} htmlgrapheaskamva)
