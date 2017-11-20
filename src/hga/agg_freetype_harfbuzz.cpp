@@ -1,3 +1,6 @@
+// Based on the code from:
+// https://github.com/lxnt/ex-sdl-freetype-harfbuzz/blob/master/ex-sdl-freetype-harfbuzz.c
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -268,7 +271,9 @@ int ft_hb_draw()
   /* Our main event/draw loop */
   int done = 0;
   int resized = 1;
+/*
   while (!done) {
+*/
     /* Clear our surface */
 /*
     SDL_FillRect(sdl_surface, NULL, 0);
@@ -590,8 +595,8 @@ int ft_hb_draw()
     }
 
     SDL_Delay(150);
-*/
   }
+*/
 
   /* Cleanup */
   hb_buffer_destroy(buf);

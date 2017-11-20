@@ -118,7 +118,7 @@ add_executable(${hga_EXE_NAME}
   ${PROJECT_SOURCE_DIR}/src/hga/main.cpp
   ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.cpp
   ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.h
-  ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.c
+  ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.cpp
   ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.h
 )
 target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
