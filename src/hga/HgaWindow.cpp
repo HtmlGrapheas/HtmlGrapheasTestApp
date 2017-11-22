@@ -7,6 +7,8 @@
 #include "agg_renderer_scanline.h"
 #include "agg_trans_affine.h"
 
+#include "agg_freetype_harfbuzz.h"
+
 namespace GUI
 {
 HgaWindow::HgaWindow(wxWindow* parent,
@@ -16,22 +18,6 @@ HgaWindow::HgaWindow(wxWindow* parent,
     long style)
     : AGGWindow(parent, id, pos, size, style)
 {
-  // Load the lion
-//  numPaths = parse_lion(paths, colors, pathIndices);
-//  assert(numPaths < 100);  // We are using fixed-sized arrays, boo.
-
-  // Find its bounding box
-//  unsigned bBox[4];
-//  agg::pod_array_adaptor<unsigned> indicesContainer(pathIndices, 100);
-//  agg::bounding_rect(paths, indicesContainer, 0, numPaths, &bBox[0], &bBox[1],
-//      &bBox[2], &bBox[3]);
-//  assert(bBox[0] <= bBox[2] && bBox[1] <= bBox[3]);
-//  width = bBox[2] - bBox[0];
-//  height = bBox[3] - bBox[1];
-
-  // Set the colors to be partially transparent for kicks
-//  for (unsigned i = 0; i < numPaths; ++i)
-//    colors[i].a = 200;
 }
 
 HgaWindow::~HgaWindow()
@@ -55,25 +41,12 @@ void HgaWindow::draw()
   RendererSolid rsolid(rbase);
 
   // Draw a rectangle against a white background
-  rbase.clear(PixelFormat::AGGType::color_type(255, 255, 255));
+  rbase.clear(PixelFormat::AGGType::color_type(0, 0, 0));
   rprim.fill_color(PixelFormat::AGGType::color_type(64, 64, 200));
   rprim.solid_rectangle(rBuf.width() / 4, rBuf.height() / 4,
       3 * rBuf.width() / 4, 3 * rBuf.height() / 4);
 
-
-
-  // Center and render the lion
-//  agg::trans_affine mat;
-//
-//  if (rBuf.width() >= width)
-//    mat *= agg::trans_affine_translation(rBuf.width() / 2 - width / 2, 0);
-//
-//  if (rBuf.height() >= height)
-//    mat *= agg::trans_affine_translation(0, rBuf.height() / 2 - height / 2);
-//
-//  agg::conv_transform<agg::path_storage, agg::trans_affine> transformedPaths(
-//      paths, mat);
-//  agg::render_all_paths(rasterizer, scanline, rsolid, transformedPaths, colors,
-//      pathIndices, numPaths);
+  // Text drawing with FreeType and HarfBuzz to AGG buffer
+  agg_ft_hb_draw<PixelFormat::AGGType>(rbase);
 }
 }
