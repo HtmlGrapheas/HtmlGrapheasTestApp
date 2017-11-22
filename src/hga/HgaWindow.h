@@ -32,16 +32,7 @@ public:
   virtual void draw();
 
 protected:
-//  agg::path_storage paths;  ///< Storage for the lion paths
-//  agg::srgba8 colors[100];  ///< Path colors
-//  unsigned pathIndices[100];  ///< Path indices
-//  unsigned numPaths;  ///< Number of paths
-//  unsigned width, height;  ///< Size of the lion paths
-
-//  agg::rasterizer_scanline_aa<> rasterizer;  ///< Scanline rasterizer
-//  agg::scanline_p8 scanline;  ///< Scanline container
 };
 }
-
 
 #endif

@@ -436,13 +436,8 @@ void agg_ft_hb_draw(agg::renderer_base<PixelFormat>& rbase)
         if (ft_face[i]->glyph->format != FT_GLYPH_FORMAT_OUTLINE) {
           printf("glyph->format = %4s\n", (char*) &ft_face[i]->glyph->format);
         } else {
-          int gx = x + (glyph_pos[j].x_offset / 64);
-          int gy = y - (glyph_pos[j].y_offset / 64);
-
-          stuffbaton.glyph_x = gx;
-          stuffbaton.glyph_y = gy;
-
-          printf("gx %d, gy %d\n", gx, gy);
+          stuffbaton.glyph_x = x + (glyph_pos[j].x_offset / 64);
+          stuffbaton.glyph_y = y - (glyph_pos[j].y_offset / 64);
 
           if ((fterr = FT_Outline_Render(
                    ft_library, &ft_face[i]->glyph->outline, &ftr_params)))
