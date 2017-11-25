@@ -120,10 +120,14 @@ add_executable(${hga_EXE_NAME}
   ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.h
   ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.h
 )
-target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
+set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
 
 # HtmlGrapheasKamva
 target_link_libraries(${hga_EXE_NAME} htmlgrapheaskamva)
+
+# wxAGG
+target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
 
 # wxWidgets
 #target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})

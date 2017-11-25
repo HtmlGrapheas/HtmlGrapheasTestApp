@@ -29,12 +29,6 @@
 
 #include "AGGWindow.h"
 
-#include "agg_color_rgba.h"
-#include "agg_path_storage.h"
-
-#include "agg_rasterizer_scanline_aa.h"
-#include "agg_scanline_p.h"
-
 namespace GUI
 {
 /// An example of an application-specific subclass of AGGWindow,
