@@ -27,6 +27,8 @@
 #ifndef AGG_FREETYPE_HARFBUZZ_H
 #define AGG_FREETYPE_HARFBUZZ_H
 
+#include <string>
+
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>
@@ -138,6 +140,12 @@ int force_ucs2_charmap(FT_Face ftf)
 template <class PixelFormat>
 void agg_ft_hb_draw(agg::renderer_base<PixelFormat>& rbase)
 {
+#ifdef ANDROID
+  std::string fontPath = "/mnt/sdcard/fonts/";
+#else
+  std::string fontPath = "fonts/";
+#endif
+
   typedef typename agg::renderer_base<PixelFormat>::color_type rbase_color_type;
 
   constexpr int NUM_EXAMPLES = 3;
@@ -172,28 +180,29 @@ void agg_ft_hb_draw(agg::renderer_base<PixelFormat>& rbase)
   int device_hdpi = 72;
   int device_vdpi = 72;
 
+  std::string enFont = fontPath + "DejaVuSerif.ttf";
+  std::string arFont = fontPath + "amiri-0.104/amiri-regular.ttf";
+  std::string chFont = fontPath + "fireflysung-1.3.0/fireflysung.ttf";
+
   /* Init freetype */
   FT_Library ft_library;
   assert(!FT_Init_FreeType(&ft_library));
 
   /* Load our fonts */
   FT_Face ft_face[NUM_EXAMPLES];
-  assert(
-      !FT_New_Face(ft_library, "fonts/DejaVuSerif.ttf", 0, &ft_face[ENGLISH]));
+  assert(!FT_New_Face(ft_library, enFont.c_str(), 0, &ft_face[ENGLISH]));
   assert(
       !FT_Set_Char_Size(ft_face[ENGLISH], 0, ptSize, device_hdpi, device_vdpi));
   ftfdump(ft_face[ENGLISH]); /* wonderful world of encodings ... */
   force_ucs2_charmap(ft_face[ENGLISH]); /* which we ignore. */
 
-  assert(!FT_New_Face(
-      ft_library, "fonts/amiri-0.104/amiri-regular.ttf", 0, &ft_face[ARABIC]));
+  assert(!FT_New_Face(ft_library, arFont.c_str(), 0, &ft_face[ARABIC]));
   assert(
       !FT_Set_Char_Size(ft_face[ARABIC], 0, ptSize, device_hdpi, device_vdpi));
   ftfdump(ft_face[ARABIC]);
   force_ucs2_charmap(ft_face[ARABIC]);
 
-  assert(!FT_New_Face(ft_library, "fonts/fireflysung-1.3.0/fireflysung.ttf", 0,
-      &ft_face[CHINESE]));
+  assert(!FT_New_Face(ft_library, chFont.c_str(), 0, &ft_face[CHINESE]));
   assert(
       !FT_Set_Char_Size(ft_face[CHINESE], 0, ptSize, device_hdpi, device_vdpi));
   ftfdump(ft_face[CHINESE]);
