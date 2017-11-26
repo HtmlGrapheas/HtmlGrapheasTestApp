@@ -85,13 +85,15 @@ include(${wxWidgets_USE_FILE})
 #-----------------------------------------------------------------------
 
 add_subdirectory(HtmlGrapheasKamva "${PROJECT_BINARY_DIR}/HtmlGrapheasKamva")
-link_directories(${AGG_LIBRARY_DIRS}) # TODO: remove it
+
+# TODO: rewrite AGG's CMake scripts to exclude link_directories().
+# AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
+# by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
+link_directories(${AGG_LIBRARY_DIRS})
 
 #-----------------------------------------------------------------------
 # Link to the library
 #-----------------------------------------------------------------------
-
-set(wxAGG_SRC_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva/external/wxAGG")
 
 # Build test executables
 add_executable(${hga_EXE_NAME}
@@ -101,33 +103,14 @@ add_executable(${hga_EXE_NAME}
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_custom_button.cpp
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
-# wxAGG sources
-#  ${wxAGG_SRC_DIR}/src/main.cpp
-#  ${wxAGG_SRC_DIR}/src/LionWindow.cpp
-#  ${wxAGG_SRC_DIR}/src/AGGWindow.cpp
-#  # Included in LionWindow.cpp
-#  #${wxAGG_SRC_DIR}/src/parse_lion.cpp
-#  ${wxAGG_SRC_DIR}/include/LionWindow.h
-#  ${wxAGG_SRC_DIR}/include/AGGWindow.h 
-#  ${wxAGG_SRC_DIR}/include/PixelFormatConvertor.h
-
-# HgaWindow
-  ${wxAGG_SRC_DIR}/src/AGGWindow.cpp
-  ${wxAGG_SRC_DIR}/include/AGGWindow.h
-  ${wxAGG_SRC_DIR}/include/PixelFormatConvertor.h
+# HtmlGrapheasApp
   ${PROJECT_SOURCE_DIR}/src/hga/main.cpp
-  ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.cpp
-  ${PROJECT_SOURCE_DIR}/src/hga/HgaWindow.h
-  ${PROJECT_SOURCE_DIR}/src/hga/agg_freetype_harfbuzz.h
 )
 set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
 
-# HtmlGrapheasKamva
-target_link_libraries(${hga_EXE_NAME} htmlgrapheaskamva)
-
-# wxAGG
-target_include_directories(${hga_EXE_NAME} PRIVATE ${wxAGG_SRC_DIR}/include)
+# HtmlGrapheasKamvaWxWidgets
+target_link_libraries(${hga_EXE_NAME} grapheaskamva)
 
 # wxWidgets
 #target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
