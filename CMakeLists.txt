@@ -109,10 +109,10 @@ add_executable(${hga_EXE_NAME}
 set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
 
-# HtmlGrapheasKamvaWxWidgets
-target_link_libraries(${hga_EXE_NAME} grapheaskamva)
+# HtmlGrapheasKamvaWxWidgets with HtmlGrapheasKamva
+target_link_libraries(${hga_EXE_NAME} PRIVATE grapheaskamva)
 
 # wxWidgets
 #target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
 #target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
-target_link_libraries(${hga_EXE_NAME} ${wxWidgets_LIBRARIES})
+target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
