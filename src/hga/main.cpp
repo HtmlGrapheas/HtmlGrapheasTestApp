@@ -24,7 +24,7 @@
 // Based on the code from:
 // http://mrl.nyu.edu/~ajsecord/downloads/wxAGG-1.1.tgz
 
-#include "HgaWindow.h"
+#include "HtmlGrapheasKamvaWx.h"
 
 #include <wx/app.h>
 #include <wx/filedlg.h>
@@ -77,7 +77,7 @@ protected:
   void initStandardGUI();
 
 
-  HgaWindow panel;  ///< The AGG bitmap display panel
+  HtmlGrapheasKamvaWx panel;  ///< The AGG bitmap display panel
 
   wxMenuBar* menuBar;  ///< Menu bar
   wxMenu* fileMenu;  ///< File menu
