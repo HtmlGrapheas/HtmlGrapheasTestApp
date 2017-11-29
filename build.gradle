@@ -1,0 +1,68 @@
+/*****************************************************************************
+ * Project:  HtmlGrapheas
+ * Purpose:  HTML text editor library
+ * Author:   NikitaFeodonit, nfeodonit@yandex.com
+ *****************************************************************************
+ *   Copyright (c) 2017 NikitaFeodonit
+ *
+ *    This file is part of the HtmlGrapheas project.
+ *
+ *    This program is free software: you can redistribute it and/or modify
+ *    it under the terms of the GNU General Public License as published
+ *    by the Free Software Foundation, either version 3 of the License,
+ *    or (at your option) any later version.
+ *
+ *    This program is distributed in the hope that it will be useful,
+ *    but WITHOUT ANY WARRANTY; without even the implied warranty of
+ *    MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
+ *    See the GNU General Public License for more details.
+ *
+ *    You should have received a copy of the GNU General Public License
+ *    along with this program. If not, see <http://www.gnu.org/licenses/>.
+ ****************************************************************************/
+
+buildscript {
+
+  repositories {
+    google()
+    jcenter()
+  }
+  dependencies {
+    classpath 'com.android.tools.build:gradle:3.0.1'
+
+    // NOTE: Do not place your application dependencies here; they belong
+    // in the individual module build.gradle files
+  }
+}
+
+allprojects {
+  repositories {
+    google()
+    jcenter()
+  }
+}
+
+task clean(type: Delete) {
+  delete rootProject.buildDir
+}
+
+// For debug.
+// Gradle plugin that adds a 'taskTree' task
+// that prints task dependency tree report to the console.
+// For more info see:
+// https://github.com/dorongold/gradle-task-tree
+// https://plugins.gradle.org/plugin/com.dorongold.task-tree
+// Example:
+// gradlew assembleDebug taskTree --no-repeat
+//
+//buildscript {
+//  repositories {
+//    maven {
+//      url "https://plugins.gradle.org/m2/"
+//    }
+//  }
+//  dependencies {
+//    classpath "gradle.plugin.com.dorongold.plugins:task-tree:1.2.2"
+//  }
+//}
+//apply plugin: "com.dorongold.task-tree"

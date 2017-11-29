@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="VcsDirectoryMappings">
+    <mapping directory="$PROJECT_DIR$" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheas" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_AGG" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_Allegro" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_FreeType" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_HarfBuzz" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts" vcs="Git" />
+  </component>
+</project>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" filepath="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasApp.iml" filepath="$PROJECT_DIR$/HtmlGrapheasApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" filepath="$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/Android/app/app.iml" filepath="$PROJECT_DIR$/platform/Android/app/app.iml" />
+    </modules>
+  </component>
+</project>
