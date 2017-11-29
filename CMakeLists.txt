@@ -70,13 +70,22 @@ set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 #-----------------------------------------------------------------------
-# find_package
+# wxWidgets
 #-----------------------------------------------------------------------
 
+# WIN32 config part.
+set(WX_CFG_DEBUG_SFX "")
+if(CMAKE_CFG_INTDIR STREQUAL "." AND CMAKE_BUILD_TYPE STREQUAL "Debug"
+    OR CMAKE_CFG_INTDIR STREQUAL "Debug")
+  set(WX_CFG_DEBUG_SFX "d")
+endif()
+set(wxWidgets_CONFIGURATION "mswu${WX_CFG_DEBUG_SFX}")
+
+# UNIX config part.
 #set(wxWidgets_USE_STATIC ON)
 #set(wxWidgets_USE_UNICODE ON)
 
-find_package(wxWidgets COMPONENTS core REQUIRED)
+find_package(wxWidgets COMPONENTS core base REQUIRED)
 include(${wxWidgets_USE_FILE})
 
 
@@ -96,7 +105,14 @@ link_directories(${AGG_LIBRARY_DIRS})
 #-----------------------------------------------------------------------
 
 # Build test executables
-add_executable(${hga_EXE_NAME}
+if(WIN32 AND NOT ATTACH_WX_CONSOLE)
+  # See docs for add_executable().
+  set(WIN32GUI WIN32)    
+else()
+  set(WIN32GUI "")    
+endif()
+
+add_executable(${hga_EXE_NAME} ${WIN32GUI}
 # wxWidgets examples.
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_hello_world.cpp
 #  ${PROJECT_SOURCE_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
@@ -108,11 +124,17 @@ add_executable(${hga_EXE_NAME}
 )
 set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
+if(ATTACH_WX_CONSOLE)
+  target_compile_definitions(${hga_EXE_NAME} PRIVATE ATTACH_WX_CONSOLE)
+endif()
 
 # HtmlGrapheasKamvaWxWidgets with HtmlGrapheasKamva
 target_link_libraries(${hga_EXE_NAME} PRIVATE grapheaskamva)
 
 # wxWidgets
-#target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
-#target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
+target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
+target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
 target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
+# TODO:
+#COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
+#wxWidgets_CXX_FLAGS

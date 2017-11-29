@@ -26,6 +26,8 @@
 
 #include "HtmlGrapheasKamvaWx.h"
 
+#include <iostream>
+
 #include <wx/app.h>
 #include <wx/filedlg.h>
 #include <wx/frame.h>
@@ -210,7 +212,7 @@ Application::Application()
 // Application initialization.
 bool Application::OnInit()
 {
-  // Create a new window
+  // Create a new window.
   frame = new MainFrame((wxFrame*) NULL, _("wxAGG: A Cute Lion"),
       wxDefaultPosition, wxSize(600, 600));
 
@@ -225,6 +227,30 @@ bool Application::OnInit()
 
 }  // namespace
 
+#if defined(__WINDOWS__) && defined(ATTACH_WX_CONSOLE)
+
+// GUI app in Windows with console.
+// Attaching a console and writing std outputs to console.
+// https://forums.wxwidgets.org/viewtopic.php?t=34374
+IMPLEMENT_APP_NO_MAIN(GUI::Application)
+
+// Application entry.
+int main(int argc, char* argv[])
+{
+  // Get HINSTANCE of current application.
+  std::cout << "Console is attached\n";
+  HINSTANCE hInstance = GetModuleHandle(NULL);
+  // Get command line.
+  wxCmdLineArgType lpCmdLine = (char*) GetCommandLine();
+
+  // Create GUI window.
+  return wxEntry(hInstance, NULL, lpCmdLine, SW_SHOWNORMAL);
+}
+
+#else  // !defined(__WINDOWS__) || !defined(ATTACH_WX_CONSOLE)
+
 // "allows wxWindows to dynamically create an instance of the application
 //  object at the appropriate point in wxWindows initialization"
 IMPLEMENT_APP(GUI::Application)
+
+#endif  // !defined(__WINDOWS__) || !defined(ATTACH_WX_CONSOLE)
