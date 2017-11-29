@@ -1,3 +1,6 @@
 [submodule "HtmlGrapheasKamva"]
 	path = HtmlGrapheasKamva
 	url = git@bitbucket.org:htmlgrapheas/htmlgrapheaskamva.git
+[submodule "platform/Android/AndroidLogcatStdouts"]
+	path = platform/Android/AndroidLogcatStdouts
+	url = git@bitbucket.org:feographia/androidlogcatstdouts.git
