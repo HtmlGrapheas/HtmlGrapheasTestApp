@@ -47,5 +47,6 @@ build/
 .externalNativeBuild
 
 # Main project
+/build_android
 /build_wx
 .downloads/

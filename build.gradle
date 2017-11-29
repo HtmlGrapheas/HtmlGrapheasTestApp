@@ -40,6 +40,10 @@ allprojects {
     google()
     jcenter()
   }
+
+// https://stackoverflow.com/a/29116723
+  buildDir =
+      "${rootDir}/build_android/build/${rootProject.name}/${project.name}"
 }
 
 task clean(type: Delete) {
