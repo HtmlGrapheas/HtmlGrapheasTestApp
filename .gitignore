@@ -36,4 +36,5 @@ build/
 .project
 
 # Main project
+/build_wx
 .downloads/

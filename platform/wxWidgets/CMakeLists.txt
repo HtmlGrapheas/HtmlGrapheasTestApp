@@ -21,24 +21,11 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
+#-----------------------------------------------------------------------
+# HtmlGrapheasApp
+#-----------------------------------------------------------------------
 
-project(HtmlGrapheasApp_wxWidgets CXX)
-set(WX_PLATFORM_SRC_DIR ${PROJECT_SOURCE_DIR}/platform/wxWidgets)
-
-list(APPEND CMAKE_MODULE_PATH "${WX_PLATFORM_SRC_DIR}/cmake")
-set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
-
-# External libs directories.
-set(EXTERNAL_SRC_DIR "${WX_PLATFORM_SRC_DIR}/external")
-if(NOT EXTERNAL_DOWNLOAD_DIR)
-  set(EXTERNAL_DOWNLOAD_DIR "${PROJECT_SOURCE_DIR}/.downloads")
-endif()
-if(NOT EXTERNAL_UNPACKED_SRC_DIR)
-  set(EXTERNAL_UNPACKED_SRC_DIR "${EXTERNAL_DOWNLOAD_DIR}/external_unpacked")
-endif()
-set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
-set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
+set(hga_EXE_NAME "html_grapheas")
 
 
 #-----------------------------------------------------------------------
@@ -69,39 +56,46 @@ set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 #-----------------------------------------------------------------------
-# wxWidgets
+# Link to the library
 #-----------------------------------------------------------------------
 
-# WIN32 config part.
-set(WX_CFG_DEBUG_SFX "")
-if(CMAKE_CFG_INTDIR STREQUAL "." AND CMAKE_BUILD_TYPE STREQUAL "Debug"
-    OR CMAKE_CFG_INTDIR STREQUAL "Debug")
-  set(WX_CFG_DEBUG_SFX "d")
-endif()
-set(wxWidgets_CONFIGURATION "mswu${WX_CFG_DEBUG_SFX}")
+# Build test executables
 
-# UNIX config part.
-#set(wxWidgets_USE_STATIC ON)
-#set(wxWidgets_USE_UNICODE ON)
+set(exe_HEADERS
+)
 
-find_package(wxWidgets COMPONENTS core base REQUIRED)
-include(${wxWidgets_USE_FILE})
+set(exe_SOURCES
+# wxWidgets examples.
+#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_hello_world.cpp
+#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
+#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_custom_button.cpp
+#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
-
-#-----------------------------------------------------------------------
-# HtmlGrapheasKamva
-#-----------------------------------------------------------------------
-
-add_subdirectory("HtmlGrapheasKamva")
-
-# TODO: rewrite AGG's CMake scripts to exclude link_directories().
-# AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
-# by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
-link_directories(${AGG_LIBRARY_DIRS})
-
-
-#-----------------------------------------------------------------------
 # HtmlGrapheasApp
-#-----------------------------------------------------------------------
+  ${WX_PLATFORM_SRC_DIR}/src/hga/main.cpp
+)
 
-add_subdirectory(${WX_PLATFORM_SRC_DIR})
+if(WIN32 AND NOT ATTACH_WX_CONSOLE)
+  # See docs for add_executable().
+  set(WIN32GUI WIN32)    
+else()
+  set(WIN32GUI "")    
+endif()
+
+add_executable(${hga_EXE_NAME} ${WIN32GUI} ${exe_SOURCES} ${exe_HEADERS})
+set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
+set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
+if(ATTACH_WX_CONSOLE)
+  target_compile_definitions(${hga_EXE_NAME} PRIVATE ATTACH_WX_CONSOLE)
+endif()
+
+# HtmlGrapheasKamva with HtmlGrapheasKamvaWxWidgets 
+target_link_libraries(${hga_EXE_NAME} PRIVATE grapheaskamva)
+
+# wxWidgets
+target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
+target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
+target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
+# TODO:
+#COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
+#wxWidgets_CXX_FLAGS
