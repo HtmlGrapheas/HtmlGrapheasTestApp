@@ -40,17 +40,19 @@ endif()
 set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
 set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
+set(HtmlGrapheasKamva_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva")
 
 #-----------------------------------------------------------------------
 # Set path to LibCMaker root
 #-----------------------------------------------------------------------
 
-#set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
+set(LIBCMAKER_SRC_DIR "${HtmlGrapheasKamva_DIR}/external/LibCMaker")
 # Uncomment it if need functions from LibCMaker
-#list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
+list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
 
 # Standard CMake vars.
-#set(BUILD_SHARED_LIBS ON)
+# We must set this variable explicitly for the wxWidgets static lib building.
+set(BUILD_SHARED_LIBS OFF)
 
 #set(SKIP_INSTALL_HEADERS ON)
 #set(SKIP_INSTALL_LIBRARIES ON)
@@ -69,30 +71,17 @@ set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 #-----------------------------------------------------------------------
-# wxWidgets
+# Build, install and find wxWidgets library
 #-----------------------------------------------------------------------
 
-# WIN32 config part.
-set(WX_CFG_DEBUG_SFX "")
-if(CMAKE_CFG_INTDIR STREQUAL "." AND CMAKE_BUILD_TYPE STREQUAL "Debug"
-    OR CMAKE_CFG_INTDIR STREQUAL "Debug")
-  set(WX_CFG_DEBUG_SFX "d")
-endif()
-set(wxWidgets_CONFIGURATION "mswu${WX_CFG_DEBUG_SFX}")
-
-# UNIX config part.
-#set(wxWidgets_USE_STATIC ON)
-#set(wxWidgets_USE_UNICODE ON)
-
-find_package(wxWidgets COMPONENTS core base REQUIRED)
-include(${wxWidgets_USE_FILE})
+include(build_wxwidgets)
 
 
 #-----------------------------------------------------------------------
 # HtmlGrapheasKamva
 #-----------------------------------------------------------------------
 
-add_subdirectory("HtmlGrapheasKamva")
+add_subdirectory(${HtmlGrapheasKamva_DIR})
 
 # TODO: rewrite AGG's CMake scripts to exclude link_directories().
 # AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
