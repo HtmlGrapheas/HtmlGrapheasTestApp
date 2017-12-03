@@ -4,3 +4,6 @@
 [submodule "platform/Android/AndroidLogcatStdouts"]
 	path = platform/Android/AndroidLogcatStdouts
 	url = git@bitbucket.org:feographia/androidlogcatstdouts.git
+[submodule "platform/wxWidgets/external/LibCMaker_wxWidgets"]
+	path = platform/wxWidgets/external/LibCMaker_wxWidgets
+	url = git@bitbucket.org:libcmaker/libcmaker_wxwidgets.git
