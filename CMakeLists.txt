@@ -42,6 +42,17 @@ set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 set(HtmlGrapheasKamva_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva")
 
+set(LIBCMAKER_FREETYPE_SRC_DIR
+  "${HtmlGrapheasKamva_DIR}/external/LibCMaker_FreeType")
+# To use our FindFreetype.cmake.
+list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
+
+set(LIBCMAKER_HARFBUZZ_SRC_DIR
+  "${EXTERNAL_SRC_DIR}/external/LibCMaker_HarfBuzz")
+# To use our FindHarfBuzz.cmake.
+list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_HARFBUZZ_SRC_DIR}/cmake/")
+
+
 #-----------------------------------------------------------------------
 # Set path to LibCMaker root
 #-----------------------------------------------------------------------
@@ -71,13 +82,6 @@ set(BUILD_SHARED_LIBS OFF)
 
 
 #-----------------------------------------------------------------------
-# Build, install and find wxWidgets library
-#-----------------------------------------------------------------------
-
-include(build_wxwidgets)
-
-
-#-----------------------------------------------------------------------
 # HtmlGrapheasKamva
 #-----------------------------------------------------------------------
 
@@ -87,6 +91,13 @@ add_subdirectory(${HtmlGrapheasKamva_DIR})
 # AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
 # by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
 link_directories(${AGG_LIBRARY_DIRS})
+
+
+#-----------------------------------------------------------------------
+# Build, install and find wxWidgets library
+#-----------------------------------------------------------------------
+
+include(build_wxwidgets) # In ${WX_PLATFORM_SRC_DIR}/cmake
 
 
 #-----------------------------------------------------------------------
