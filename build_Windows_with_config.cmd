@@ -41,7 +41,7 @@ goto license_header
 @set WX_ROOT_DIR="E:/path/to/wxWidgets-3.1.0"
 
 @set SOURCE_DIR=%~dp0
-@set BUILD_DIR=%~dp0build
+@set BUILD_DIR=%~dp0build_wxms
 
 @set BUILD_TYPE=Debug
 @rem set BUILD_TYPE=Release

@@ -24,7 +24,7 @@ goto license_header
 :license_header
 
 @set CMAKE_PATH="E:/path/to/bin/cmake"
-@set BUILD_DIR=%~dp0build
+@set BUILD_DIR=%~dp0build_wxms
 @set BUILD_TYPE=Debug
 
 %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE%
