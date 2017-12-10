@@ -23,14 +23,31 @@
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-project(HtmlGrapheasApp_wxWidgets CXX)
-set(WX_PLATFORM_SRC_DIR ${PROJECT_SOURCE_DIR}/platform/wxWidgets)
+project(HtmlGrapheasApp CXX)
 
-list(APPEND CMAKE_MODULE_PATH "${WX_PLATFORM_SRC_DIR}/cmake")
-set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
+set(HtmlGrapheasKamva_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva")
 
+
+#-----------------------------------------------------------------------
+# Settings for wxWidgets platform
+#-----------------------------------------------------------------------
+
+if(WIN32 OR (UNIX AND NOT ANDROID))
+  set(wxWidgets_PLATFORM ON)
+endif()
+
+if(wxWidgets_PLATFORM)
+  set(PLATFORM_WX_SRC_DIR ${PROJECT_SOURCE_DIR}/platform/wxWidgets)
+  set(USING_WX_SUB_DIR ON)
+  list(APPEND CMAKE_MODULE_PATH "${PLATFORM_WX_SRC_DIR}/cmake")
+  set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
+endif()
+
+
+#-----------------------------------------------------------------------
 # External libs directories.
-set(EXTERNAL_SRC_DIR "${WX_PLATFORM_SRC_DIR}/external")
+#-----------------------------------------------------------------------
+
 if(NOT EXTERNAL_DOWNLOAD_DIR)
   set(EXTERNAL_DOWNLOAD_DIR "${PROJECT_SOURCE_DIR}/.downloads")
 endif()
@@ -40,7 +57,10 @@ endif()
 set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
 set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
-set(HtmlGrapheasKamva_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva")
+
+#-----------------------------------------------------------------------
+# Use our Find* modules
+#-----------------------------------------------------------------------
 
 set(LIBCMAKER_FREETYPE_SRC_DIR
   "${HtmlGrapheasKamva_DIR}/external/LibCMaker_FreeType")
@@ -48,7 +68,7 @@ set(LIBCMAKER_FREETYPE_SRC_DIR
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
 
 set(LIBCMAKER_HARFBUZZ_SRC_DIR
-  "${EXTERNAL_SRC_DIR}/external/LibCMaker_HarfBuzz")
+  "${HtmlGrapheasKamva_DIR}/external/LibCMaker_HarfBuzz")
 # To use our FindHarfBuzz.cmake.
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_HARFBUZZ_SRC_DIR}/cmake/")
 
@@ -85,23 +105,33 @@ set(BUILD_SHARED_LIBS OFF)
 # HtmlGrapheasKamva
 #-----------------------------------------------------------------------
 
-add_subdirectory(${HtmlGrapheasKamva_DIR})
+if(wxWidgets_PLATFORM AND USING_WX_SUB_DIR)
+  add_subdirectory(${HtmlGrapheasKamva_DIR})
 
-# TODO: rewrite AGG's CMake scripts to exclude link_directories().
-# AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
-# by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
-link_directories(${AGG_LIBRARY_DIRS})
-
-
-#-----------------------------------------------------------------------
-# Build, install and find wxWidgets library
-#-----------------------------------------------------------------------
-
-include(build_wxwidgets) # In ${WX_PLATFORM_SRC_DIR}/cmake
+  # TODO: rewrite AGG's CMake scripts to exclude link_directories().
+  # AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
+  # by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
+  link_directories(${AGG_LIBRARY_DIRS})
+endif()
 
 
 #-----------------------------------------------------------------------
-# HtmlGrapheasApp
+# Platforms
 #-----------------------------------------------------------------------
 
-add_subdirectory(${WX_PLATFORM_SRC_DIR})
+#-----------------------------------------------------------------------
+# wxWidgets
+#-----------------------------------------------------------------------
+
+if(wxWidgets_PLATFORM)
+  set(HtmlGrapheasKamva_PLATFORM_WX_DIR
+    "${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/grapheaskamva"
+  )
+  set(PLATFORM_WX_EXTERNAL_SRC_DIR "${PLATFORM_WX_SRC_DIR}/external")
+
+  # Build, install and find wxWidgets library.
+  include(build_wxwidgets) # In ${PLATFORM_WX_SRC_DIR}/cmake
+
+  # HtmlGrapheasApp
+  add_subdirectory(${PLATFORM_WX_SRC_DIR})
+endif()

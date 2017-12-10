@@ -31,7 +31,7 @@ include(cmr_print_message)
 # Set vars for LibCMaker_wxWidgets.
 #-----------------------------------------------------------------------
 
-set(LIBCMAKER_WX_SRC_DIR "${EXTERNAL_SRC_DIR}/LibCMaker_wxWidgets")
+set(LIBCMAKER_WX_SRC_DIR "${PLATFORM_WX_EXTERNAL_SRC_DIR}/LibCMaker_wxWidgets")
 # To use our FindwxWidgets.cmake and UsewxWidgets.cmake.
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake")
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake/modules")
@@ -39,7 +39,9 @@ list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake/modules")
 
 set(WX_lib_VERSION "3.1.0")
 set(WX_lib_COMPONENTS core base)
-set(USING_WX_SUB_DIR ON)
+if(NOT DEFINED USING_WX_SUB_DIR)
+  set(USING_WX_SUB_DIR ON)
+endif()
 
 set(WX_DOWNLOAD_DIR "${EXTERNAL_DOWNLOAD_DIR}")
 set(WX_UNPACKED_SRC_DIR "${EXTERNAL_UNPACKED_SRC_DIR}")

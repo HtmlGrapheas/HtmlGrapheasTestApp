@@ -25,6 +25,11 @@
 # HtmlGrapheasKamvaWxWidgets
 #-----------------------------------------------------------------------
 
+if(NOT HtmlGrapheasKamva_DIR)
+  message(FATAL_ERROR
+    "Please set HtmlGrapheasKamva_DIR with path to HtmlGrapheasKamva library.")
+endif()
+
 add_subdirectory(
   ${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/grapheaskamva
   ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets/grapheaskamva
@@ -76,13 +81,13 @@ set(exe_HEADERS
 
 set(exe_SOURCES
 # wxWidgets examples.
-#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_hello_world.cpp
-#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
-#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_custom_button.cpp
-#  ${WX_PLATFORM_SRC_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
+#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_hello_world.cpp
+#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
+#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_custom_button.cpp
+#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
 # HtmlGrapheasApp
-  ${WX_PLATFORM_SRC_DIR}/src/hga/main.cpp
+  ${PLATFORM_WX_SRC_DIR}/src/hga/main.cpp
 )
 
 if(WIN32 AND NOT ATTACH_WX_CONSOLE)
@@ -95,6 +100,9 @@ endif()
 add_executable(${hga_EXE_NAME} ${WIN32GUI} ${exe_SOURCES} ${exe_HEADERS})
 set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
 set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
+set_property(TARGET ${hga_EXE_NAME}
+  PROPERTY RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}"
+)
 if(ATTACH_WX_CONSOLE)
   target_compile_definitions(${hga_EXE_NAME} PRIVATE ATTACH_WX_CONSOLE)
 endif()
