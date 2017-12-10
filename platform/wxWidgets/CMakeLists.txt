@@ -22,6 +22,16 @@
 # ****************************************************************************
 
 #-----------------------------------------------------------------------
+# HtmlGrapheasKamvaWxWidgets
+#-----------------------------------------------------------------------
+
+add_subdirectory(
+  ${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/grapheaskamva
+  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets/grapheaskamva
+)
+
+
+#-----------------------------------------------------------------------
 # HtmlGrapheasApp
 #-----------------------------------------------------------------------
 
@@ -93,9 +103,13 @@ endif()
 target_link_libraries(${hga_EXE_NAME} PRIVATE grapheaskamva)
 
 # wxWidgets
-target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
-target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
-target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
-# TODO:
-#COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
-#wxWidgets_CXX_FLAGS
+if(USING_WX_SUB_DIR)
+  target_link_libraries(${hga_EXE_NAME} PRIVATE ${WX_lib_COMPONENTS})
+else()
+  target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
+  target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
+  target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
+  # TODO:
+  #COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
+  #wxWidgets_CXX_FLAGS
+endif()

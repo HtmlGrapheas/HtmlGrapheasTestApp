@@ -33,10 +33,13 @@ include(cmr_print_message)
 
 set(LIBCMAKER_WX_SRC_DIR "${EXTERNAL_SRC_DIR}/LibCMaker_wxWidgets")
 # To use our FindwxWidgets.cmake and UsewxWidgets.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake/")
+list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake")
+list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake/modules")
+
 
 set(WX_lib_VERSION "3.1.0")
 set(WX_lib_COMPONENTS core base)
+set(USING_WX_SUB_DIR ON)
 
 set(WX_DOWNLOAD_DIR "${EXTERNAL_DOWNLOAD_DIR}")
 set(WX_UNPACKED_SRC_DIR "${EXTERNAL_UNPACKED_SRC_DIR}")
@@ -44,18 +47,49 @@ set(WX_BUILD_DIR "${EXTERNAL_BIN_DIR}/build_wxwidgets")
 
 set(COPY_WX_CMAKE_BUILD_SCRIPTS ON)
 
-# TODO: make wx-config OR use with add_subdirectory()
 set(wxWidgets_ROOT_DIR "${EXTERNAL_INSTALL_DIR}")
 set(ENV{wxWidgets_ROOT_DIR} "${wxWidgets_ROOT_DIR}")
+
+if(USING_WX_SUB_DIR)
+  include(cmr_wxwidgets_get_download_params)
+  cmr_wxwidgets_get_download_params(${WX_lib_VERSION}
+    WX_lib_URL WX_lib_SHA WX_lib_SRC_DIR_NAME WX_lib_ARCH_FILE_NAME)
+  set(WX_lib_SRC_DIR "${WX_UNPACKED_SRC_DIR}/${WX_lib_SRC_DIR_NAME}")
+endif()
+
 
 # Library specific vars and options.
 
 # Add a option. Parameter STRINGS represents a valid values.
 # wx_option(<name> <desc> [default] [STRINGS strings])
 function(wx_option name desc)
+#  cmake_parse_arguments(OPTION "" "" "STRINGS" ${ARGN})
+#  set(default ${OPTION_UNPARSED_ARGUMENTS})
+#  set(${name} "${default}" PARENT_SCOPE)
+
   cmake_parse_arguments(OPTION "" "" "STRINGS" ${ARGN})
-  set(default ${OPTION_UNPARSED_ARGUMENTS})
-  set(${name} "${default}" PARENT_SCOPE)
+  if(ARGC EQUAL 2)
+    set(default ON)
+  else()
+    set(default ${OPTION_UNPARSED_ARGUMENTS})
+  endif()
+          
+  if(OPTION_STRINGS)
+    set(cache_type STRING)
+  else()
+    set(cache_type BOOL)
+  endif()
+
+  set(${name} "${default}" CACHE ${cache_type} "${desc}")
+
+  string(SUBSTRING ${name} 0 6 prefix)
+  if(prefix STREQUAL "wxUSE_")
+    mark_as_advanced(${name})
+  endif()
+
+  if(OPTION_STRINGS)
+    set_property(CACHE ${name} PROPERTY STRINGS ${OPTION_STRINGS})
+  endif()
 endfunction()
 
 
@@ -116,31 +150,46 @@ wx_option(wxUSE_STC "use wxStyledTextCtrl library" OFF)
 
 
 # Try to find already installed lib.
-# TODO: change FindwxWidgets.cmake
-#find_package(wxWidgets ${WX_lib_VERSION}
-#  COMPONENTS ${WX_lib_COMPONENTS} QUIET
-#)
+if(NOT USING_WX_SUB_DIR)
+  find_package(wxWidgets ${WX_lib_VERSION}
+    COMPONENTS ${WX_lib_COMPONENTS} QUIET
+  )
+endif()
 
-if(NOT wxWidgets_FOUND)
-  cmr_print_message(
-    "wxWidgets is not installed, build and install it.")
+if(NOT wxWidgets_FOUND OR USING_WX_SUB_DIR)
+  if(NOT USING_WX_SUB_DIR)
+    cmr_print_message(
+      "wxWidgets is not installed, build and install it.")
+  endif()
 
-  include(${EXTERNAL_SRC_DIR}/LibCMaker_wxWidgets/lib_cmaker_wxwidgets.cmake)
+  set(ONLY_CONFIGURE "")
+  if(USING_WX_SUB_DIR)
+    set(ONLY_CONFIGURE "ONLY_CONFIGURE")
+  endif()
+
+  include(${LIBCMAKER_WX_SRC_DIR}/lib_cmaker_wxwidgets.cmake)
   lib_cmaker_wxwidgets(
     VERSION ${WX_lib_VERSION}
     DOWNLOAD_DIR ${WX_DOWNLOAD_DIR}
     UNPACKED_SRC_DIR ${WX_UNPACKED_SRC_DIR}
     BUILD_DIR ${WX_BUILD_DIR}
+    ${ONLY_CONFIGURE}
   )
   
   # wxWidgets
-  find_package(wxWidgets ${WX_lib_VERSION}
-    COMPONENTS ${WX_lib_COMPONENTS} REQUIRED
-  )
+  if(NOT USING_WX_SUB_DIR)
+    find_package(wxWidgets ${WX_lib_VERSION}
+      COMPONENTS ${WX_lib_COMPONENTS} REQUIRED
+    )
+  endif()
   
 else()
   cmr_print_message(
     "wxWidgets is installed, skip building and installing it.")
 endif()
 
-include(${wxWidgets_USE_FILE})
+if(USING_WX_SUB_DIR)
+  add_subdirectory(${WX_lib_SRC_DIR} ${WX_BUILD_DIR})
+else()
+  include(${wxWidgets_USE_FILE})
+endif()
