@@ -38,7 +38,6 @@ goto license_header
 
 
 @set CMAKE_PATH="cmake"
-@set WX_ROOT_DIR="E:/path/to/wxWidgets-3.1.0"
 
 @set SOURCE_DIR=%~dp0
 @set BUILD_DIR=%~dp0build_wxms
@@ -60,17 +59,17 @@ goto license_header
 
 
 :win32_xp
-@set VS_GEN="Visual Studio 12 2013"
-@set XP_TOOL=-T v120_xp
+@set VS_GEN="Visual Studio 15 2017"
+@set XP_TOOL=-T v141_xp
 @goto :RunCMake
 
 :win32
-@set VS_GEN="Visual Studio 12 2013"
+@set VS_GEN="Visual Studio 15 2017"
 @set XP_TOOL=
 @goto :RunCMake
 
 :win64
-@set VS_GEN="Visual Studio 12 2013 Win64"
+@set VS_GEN="Visual Studio 15 2017 Win64"
 @set XP_TOOL=
 @goto :RunCMake
 
@@ -79,7 +78,6 @@ goto license_header
 %CMAKE_PATH% ^
  -H%SOURCE_DIR% ^
  -B%BUILD_DIR% ^
- -DwxWidgets_ROOT_DIR=%WX_ROOT_DIR% ^
  -DATTACH_WX_CONSOLE=%ATTACH_WX_CONSOLE% ^
  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
  -G %VS_GEN% ^
