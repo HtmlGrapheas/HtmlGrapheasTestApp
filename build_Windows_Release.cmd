@@ -23,7 +23,7 @@ goto license_header
 # ****************************************************************************
 :license_header
 
-@set CMAKE_PATH="E:/path/to/bin/cmake"
+@set CMAKE_PATH="cmake"
 @set BUILD_DIR=%~dp0build_wxms
 @set BUILD_TYPE=Release
 

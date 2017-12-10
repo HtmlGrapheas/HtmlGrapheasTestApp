@@ -37,7 +37,7 @@ goto license_header
 @rem "-H" - specifies path to the source folder
 
 
-@set CMAKE_PATH="E:/path/to/bin/cmake"
+@set CMAKE_PATH="cmake"
 @set WX_ROOT_DIR="E:/path/to/wxWidgets-3.1.0"
 
 @set SOURCE_DIR=%~dp0
