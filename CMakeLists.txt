@@ -41,6 +41,17 @@ if(wxWidgets_PLATFORM)
   set(USING_WX_SUB_DIR ON)
   list(APPEND CMAKE_MODULE_PATH "${PLATFORM_WX_SRC_DIR}/cmake")
   set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
+  
+  # Enable /MP flag for Visual Studio 2008 and greater.
+  if(MSVC_VERSION GREATER 1400)
+    include(ProcessorCount) # ProcessorCount
+    ProcessorCount(CPU_CNT)
+    if(CPU_CNT GREATER 0)
+      set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${CPU_CNT}")
+      set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP${CPU_CNT}")
+    endif()
+  endif()
+
 endif()
 
 
