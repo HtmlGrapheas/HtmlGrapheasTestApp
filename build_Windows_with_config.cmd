@@ -73,6 +73,9 @@ goto license_header
 @set XP_TOOL=
 @goto :RunCMake
 
+@rem Use /MP flag in command line. Just specify /MP by itself to have
+@rem VS's build system automatically select how many threads to compile on
+@rem (which usually is the maximum number of threads available).
 
 :RunCMake
 %CMAKE_PATH% ^
@@ -80,6 +83,7 @@ goto license_header
  -B%BUILD_DIR% ^
  -DATTACH_WX_CONSOLE=%ATTACH_WX_CONSOLE% ^
  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
+ -DCMAKE_CXX_FLAGS="/MP" -DCMAKE_C_FLAGS="/MP" ^
  -G %VS_GEN% ^
  %XP_TOOL% ^
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
