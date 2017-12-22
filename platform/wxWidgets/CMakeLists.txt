@@ -31,8 +31,8 @@ if(NOT HtmlGrapheasKamva_DIR)
 endif()
 
 add_subdirectory(
-  ${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/grapheaskamva
-  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets/grapheaskamva
+  ${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/HtmlGrapheasKamvaWx
+  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets/HtmlGrapheasKamvaWx
 )
 
 
@@ -107,8 +107,8 @@ if(ATTACH_WX_CONSOLE)
   target_compile_definitions(${hga_EXE_NAME} PRIVATE ATTACH_WX_CONSOLE)
 endif()
 
-# HtmlGrapheasKamva with HtmlGrapheasKamvaWxWidgets 
-target_link_libraries(${hga_EXE_NAME} PRIVATE grapheaskamva)
+# HtmlGrapheasKamvaWx with HtmlGrapheasKamva
+target_link_libraries(${hga_EXE_NAME} PRIVATE htmlgrapheaskamvawx)
 
 # wxWidgets
 if(USING_WX_SUB_DIR)
