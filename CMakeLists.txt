@@ -109,6 +109,15 @@ set(BUILD_SHARED_LIBS OFF)
 # Set useful vars for lib_cmaker_*().
 #set(cmr_PRINT_DEBUG ON)
 
+#-----------------------------------------------------------------------
+# Testing
+#-----------------------------------------------------------------------
+
+option(BUILD_TESTING "Build the testing tree." ON)
+if(BUILD_TESTING)
+  enable_testing()
+endif()
+
 
 #-----------------------------------------------------------------------
 # Configure for find_package.
