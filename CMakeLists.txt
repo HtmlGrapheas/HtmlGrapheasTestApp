@@ -113,7 +113,7 @@ set(BUILD_SHARED_LIBS OFF)
 # Testing
 #-----------------------------------------------------------------------
 
-option(BUILD_TESTING "Build the testing tree." ON)
+option(BUILD_TESTING "Build the testing tree." OFF)
 if(BUILD_TESTING)
   enable_testing()
 endif()
