@@ -39,15 +39,17 @@ build/
 *.iml
 .gradle
 /local.properties
-/.idea/workspace.xml
+/.idea/caches
 /.idea/libraries
+/.idea/modules.xml
+/.idea/workspace.xml
 .DS_Store
 /build
 /captures
 .externalNativeBuild
 
 # Main project
+.downloads/
 /build_android
 /build_wx
 /build_wxms
-.downloads/

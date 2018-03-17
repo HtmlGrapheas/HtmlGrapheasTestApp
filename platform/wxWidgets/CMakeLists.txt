@@ -31,8 +31,8 @@ if(NOT HtmlGrapheasKamva_DIR)
 endif()
 
 add_subdirectory(
-  ${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/HtmlGrapheasKamvaWx
-  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets/HtmlGrapheasKamvaWx
+  ${HtmlGrapheasKamva_DIR}/src/hgkamva/platform/wxwidgets
+  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamva/platform/wxwidgets
 )
 
 
@@ -87,7 +87,7 @@ set(exe_SOURCES
 #  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
 
 # HtmlGrapheasApp
-  ${PLATFORM_WX_SRC_DIR}/src/hga/main.cpp
+  ${PLATFORM_WX_SRC_DIR}/src/hgapp/main.cpp
 )
 
 if(WIN32 AND NOT ATTACH_WX_CONSOLE)

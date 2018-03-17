@@ -151,7 +151,7 @@ endif()
 
 if(wxWidgets_PLATFORM)
   set(HtmlGrapheasKamva_PLATFORM_WX_DIR
-    "${HtmlGrapheasKamva_DIR}/src/hgk/platform/wxwidgets/grapheaskamva"
+    "${HtmlGrapheasKamva_DIR}/src/hgkamva/platform/wxwidgets"
   )
   set(PLATFORM_WX_EXTERNAL_SRC_DIR "${PLATFORM_WX_SRC_DIR}/external")
 

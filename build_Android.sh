@@ -1,1 +1,1 @@
-./gradlew assembleDebug
+./gradlew --info assembleDebug
