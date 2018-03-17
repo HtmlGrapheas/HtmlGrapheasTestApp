@@ -24,7 +24,7 @@
  ****************************************************************************/
   -->
 
-<manifest package="ru.feographia.htmlgrapheasappandroid"
+<manifest package="ru.feographia.htmlgrapheasstasi"
           xmlns:android="http://schemas.android.com/apk/res/android"
     >
 
@@ -38,7 +38,7 @@
       android:supportsRtl="true"
       android:theme="@style/AppTheme"
       >
-    <activity android:name="ru.feographia.htmlgrapheasappandroid.MainActivity">
+    <activity android:name="ru.feographia.htmlgrapheasstasi.MainActivity">
       <intent-filter>
         <action android:name="android.intent.action.MAIN"/>
 

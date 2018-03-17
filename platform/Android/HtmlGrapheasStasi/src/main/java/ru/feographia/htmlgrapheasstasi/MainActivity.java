@@ -21,12 +21,12 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-package ru.feographia.htmlgrapheasappandroid;
+package ru.feographia.htmlgrapheasstasi;
 
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import ru.feographia.androidlogcatstdouts.AndroidLogcatStdoutsJni;
-import ru.feographia.htmlgrapheas.HtmlGrapheasView;
+import ru.feographia.htmlgrapheaskamva.HtmlGrapheasView;
 
 
 public class MainActivity

@@ -33,7 +33,7 @@ android {
     targetSdkVersion 26
     versionCode 1
     versionName "1.0"
-    archivesBaseName = "hga-$versionName"
+    archivesBaseName = "htmlgrapheasapp-${versionName}-rev.${versionCode}"
     testInstrumentationRunner "android.support.test.runner.AndroidJUnitRunner"
   }
   buildTypes {
