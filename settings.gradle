@@ -22,8 +22,9 @@
  ****************************************************************************/
 
 // https://stackoverflow.com/a/24978161
-include "app"
-project(":app").projectDir = new File("${rootDir}/platform/Android/app")
+include "HtmlGrapheasStasi"
+project(":HtmlGrapheasStasi").projectDir =
+    new File("${rootDir}/platform/Android/HtmlGrapheasStasi")
 
 include "AndroidLogcatStdouts"
 project(":AndroidLogcatStdouts").projectDir =

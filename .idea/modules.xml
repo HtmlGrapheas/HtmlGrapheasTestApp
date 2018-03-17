@@ -5,7 +5,7 @@
       <module fileurl="file://$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" filepath="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" />
       <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasApp.iml" filepath="$PROJECT_DIR$/HtmlGrapheasApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" filepath="$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" />
-      <module fileurl="file://$PROJECT_DIR$/platform/Android/app/app.iml" filepath="$PROJECT_DIR$/platform/Android/app/app.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/Android/HtmlGrapheasStasi/HtmlGrapheasStasi.iml" filepath="$PROJECT_DIR$/platform/Android/HtmlGrapheasStasi/HtmlGrapheasStasi.iml" />
     </modules>
   </component>
 </project>
