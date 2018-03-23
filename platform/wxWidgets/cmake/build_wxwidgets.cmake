@@ -64,7 +64,7 @@ endif()
 
 # Add a option. Parameter STRINGS represents a valid values.
 # wx_option(<name> <desc> [default] [STRINGS strings])
-function(wx_option name desc)
+function(hga_wx_option name desc)
 #  cmake_parse_arguments(OPTION "" "" "STRINGS" ${ARGN})
 #  set(default ${OPTION_UNPARSED_ARGUMENTS})
 #  set(${name} "${default}" PARENT_SCOPE)
@@ -96,40 +96,40 @@ endfunction()
 
 
 # Global build options
-#wx_option(wxBUILD_SHARED "Build wx libraries as shared libs"
+#hga_wx_option(wxBUILD_SHARED "Build wx libraries as shared libs"
 #  ${BUILD_SHARED_LIBS}
 #)
-wx_option(wxBUILD_MONOLITHIC "Build wxWidgets as single library" OFF)
-wx_option(wxBUILD_SAMPLES "Build only important samples (SOME) or ALL" OFF
+hga_wx_option(wxBUILD_MONOLITHIC "Build wxWidgets as single library" OFF)
+hga_wx_option(wxBUILD_SAMPLES "Build only important samples (SOME) or ALL" OFF
   STRINGS SOME ALL OFF
 )
-wx_option(wxBUILD_TESTS "Build console tests (CONSOLE_ONLY) or ALL" OFF
+hga_wx_option(wxBUILD_TESTS "Build console tests (CONSOLE_ONLY) or ALL" OFF
   STRINGS CONSOLE_ONLY ALL OFF
 )
-wx_option(wxBUILD_DEMOS "Build demos" OFF)
-wx_option(wxBUILD_PRECOMP "Use precompiled headers" ON)
-wx_option(wxBUILD_INSTALL "Create install/uninstall target for wxWidgets" ON)
-wx_option(wxBUILD_COMPATIBILITY "Enable compatibilty with earlier wxWidgets versions"
+hga_wx_option(wxBUILD_DEMOS "Build demos" OFF)
+hga_wx_option(wxBUILD_PRECOMP "Use precompiled headers" ON)
+hga_wx_option(wxBUILD_INSTALL "Create install/uninstall target for wxWidgets" ON)
+hga_wx_option(wxBUILD_COMPATIBILITY "Enable compatibilty with earlier wxWidgets versions"
   3.0
   STRINGS 2.8 3.0 3.1
 )
 
 if(MSVC)
-  wx_option(wxBUILD_USE_STATIC_RUNTIME "Link using the static runtime library"
+  hga_wx_option(wxBUILD_USE_STATIC_RUNTIME "Link using the static runtime library"
     OFF
   )
 else()
   # It set in WX by CMAKE_CXX_STANDARD
-  #wx_option(wxBUILD_CXX_STANDARD "C++ standard used to build wxWidgets targets"
+  #hga_wx_option(wxBUILD_CXX_STANDARD "C++ standard used to build wxWidgets targets"
   #  ${CXX_STANDARD_DEFAULT}
   #  STRINGS COMPILER_DEFAULT 98 11 14
   #)
 endif()
 
-# TODO: wx_option(wxUSE_*)
+# TODO: hga_wx_option(wxUSE_*)
 
 # Exclude STC for version 3.1.0. TODO: remove it for 3.1.1.
-wx_option(wxUSE_STC "use wxStyledTextCtrl library" OFF)
+hga_wx_option(wxUSE_STC "use wxStyledTextCtrl library" OFF)
 
 
 #-----------------------------------------------------------------------

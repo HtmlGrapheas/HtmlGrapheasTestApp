@@ -23,7 +23,13 @@
 
 cmake_minimum_required(VERSION 3.2 FATAL_ERROR)
 
-project(HtmlGrapheasApp CXX)
+# We must add "C" language for subprojects with "C" because of error:
+# CMake Error: Error required internal CMake variable not set,
+# cmake may not be built correctly.
+# Missing variable is:
+# CMAKE_C_COMPILE_OBJECT
+# (Now only for wxWidgets subproject.)
+project(HtmlGrapheasApp CXX C)
 
 set(HtmlGrapheasKamva_DIR "${PROJECT_SOURCE_DIR}/HtmlGrapheasKamva")
 
@@ -69,7 +75,7 @@ if(NOT EXTERNAL_DOWNLOAD_DIR)
   set(EXTERNAL_DOWNLOAD_DIR "${PROJECT_SOURCE_DIR}/.downloads")
 endif()
 if(NOT EXTERNAL_UNPACKED_SRC_DIR)
-  set(EXTERNAL_UNPACKED_SRC_DIR "${EXTERNAL_DOWNLOAD_DIR}/external_unpacked")
+  set(EXTERNAL_UNPACKED_SRC_DIR "${EXTERNAL_DOWNLOAD_DIR}/.external_unpacked")
 endif()
 set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
 set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
