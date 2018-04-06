@@ -24,8 +24,6 @@
 // Based on the code from:
 // http://mrl.nyu.edu/~ajsecord/downloads/wxAGG-1.1.tgz
 
-#include "HtmlGrapheasKamvaWx.h"
-
 #include <iostream>
 
 #include <wx/app.h>
@@ -34,6 +32,8 @@
 #include <wx/intl.h>
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
+
+#include "hgkamva/platform/wxwidgets/HgKamvaWxWindow.h"
 
 namespace hg
 {
@@ -81,7 +81,7 @@ protected:
   void initStandardGUI();
 
 private:
-  HtmlGrapheasKamvaWx mHgKamva;  ///< The AGG bitmap display panel
+  HgKamvaWxWindow mHgKamva;  ///< The AGG bitmap display panel
 
   wxMenuBar* mMenuBar;  ///< Menu bar
   wxMenu* mFileMenu;  ///< File menu
