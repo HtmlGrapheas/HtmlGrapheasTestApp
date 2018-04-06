@@ -121,3 +121,42 @@ else()
   #COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
   #wxWidgets_CXX_FLAGS
 endif()
+
+if(BUILD_TESTING)
+  set(WX_HGRAPH_TEST_DIR "${PROJECT_BINARY_DIR}")
+  set(WX_HGRAPH_TEST_FONT_DIR "${WX_HGRAPH_TEST_DIR}/fonts")
+  set(WX_HGRAPH_TEST_DATA_DIR "${WX_HGRAPH_TEST_DIR}/data")
+
+  add_custom_target(prepare_wx_test_fonts ALL
+    COMMAND
+      ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_FONT_DIR}"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      # Arimo font files
+      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-BoldItalic.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Bold.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Italic.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Regular.ttf"
+
+      # Tinos font files
+      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-BoldItalic.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Bold.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Italic.ttf"
+      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Regular.ttf"
+
+      # To dir 'fonts'
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+  )
+
+  add_custom_target(prepare_wx_test_data ALL
+    COMMAND
+      ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_DATA_DIR}"
+
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HtmlGrapheasKamva_DIR}/test/data/master.css"
+      "${HtmlGrapheasKamva_DIR}/test/data/test.html"
+
+      # To dir 'data'
+      "${WX_HGRAPH_TEST_DATA_DIR}"
+  )
+endif()
