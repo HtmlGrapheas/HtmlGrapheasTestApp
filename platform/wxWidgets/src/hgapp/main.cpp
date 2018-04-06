@@ -35,8 +35,10 @@
 #include <wx/menu.h>
 #include <wx/msgdlg.h>
 
-namespace GUI
+namespace hg
 {
+//////// class MainFrame ////////
+
 /// Main window of the application.
 class MainFrame : public wxFrame
 {
@@ -78,28 +80,16 @@ protected:
   /// Setup the status bar and menu bar.
   void initStandardGUI();
 
-
+private:
   HtmlGrapheasKamvaWx panel;  ///< The AGG bitmap display panel
 
   wxMenuBar* menuBar;  ///< Menu bar
   wxMenu* fileMenu;  ///< File menu
   wxMenu* helpMenu;  ///< Help menu
 
-  DECLARE_EVENT_TABLE()  /// Allocate wxWidgets storage for event handlers
-};
-
-/// The top-most interface to wxWidgets.
-class Application : public wxApp
-{
-public:
-  Application();
-
-  /// wxWidgets calls this to initialize the user interface
-  bool OnInit();
-
 protected:
-  MainFrame* frame;
-};
+  DECLARE_EVENT_TABLE()  /// Allocate wxWidgets storage for event handlers
+};  // class MainFrame
 
 // Declare the event handlers for the menu items, etc.
 BEGIN_EVENT_TABLE(MainFrame, wxFrame)
@@ -148,7 +138,7 @@ void MainFrame::onClose(wxCloseEvent& WXUNUSED(event))
 
 void MainFrame::onFileMenu(wxCommandEvent& event)
 {
-  switch (event.GetId()) {
+  switch(event.GetId()) {
     case wxID_OPEN:
       open();
       break;
@@ -173,7 +163,7 @@ void MainFrame::onAbout(wxCommandEvent& WXUNUSED(event))
 
 void MainFrame::updateStatus(const wxString& s)
 {
-  if (GetStatusBar())
+  if(GetStatusBar())
     SetStatusText(s);
 }
 
@@ -203,6 +193,21 @@ void MainFrame::open()
   //  wxMessageBox(msg, _("Selected files"), wxICON_INFORMATION | wxOK, this);
 }
 
+//////// class Application ////////
+
+/// The top-most interface to wxWidgets.
+class Application : public wxApp
+{
+public:
+  Application();
+
+  /// wxWidgets calls this to initialize the user interface
+  bool OnInit();
+
+protected:
+  MainFrame* frame;
+};  // class Application
+
 Application::Application()
     : frame(NULL)
 {
@@ -225,14 +230,16 @@ bool Application::OnInit()
   return true;
 }
 
-}  // namespace
+}  // namespace hg
+
+//////// main() function ////////
 
 #if defined(__WINDOWS__) && defined(ATTACH_WX_CONSOLE)
 
 // GUI app in Windows with console.
 // Attaching a console and writing std outputs to console.
 // https://forums.wxwidgets.org/viewtopic.php?t=34374
-IMPLEMENT_APP_NO_MAIN(GUI::Application)
+IMPLEMENT_APP_NO_MAIN(hg::Application)
 
 // Application entry.
 int main(int argc, char* argv[])
@@ -247,10 +254,10 @@ int main(int argc, char* argv[])
   return wxEntry(hInstance, NULL, lpCmdLine, SW_SHOWNORMAL);
 }
 
-#else  // !defined(__WINDOWS__) || !defined(ATTACH_WX_CONSOLE)
+#else  // !(defined(__WINDOWS__) && defined(ATTACH_WX_CONSOLE))
 
 // "allows wxWindows to dynamically create an instance of the application
 //  object at the appropriate point in wxWindows initialization"
-IMPLEMENT_APP(GUI::Application)
+IMPLEMENT_APP(hg::Application)
 
-#endif  // !defined(__WINDOWS__) || !defined(ATTACH_WX_CONSOLE)
+#endif  // defined(__WINDOWS__) && defined(ATTACH_WX_CONSOLE)
