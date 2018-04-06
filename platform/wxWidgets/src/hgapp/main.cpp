@@ -81,11 +81,11 @@ protected:
   void initStandardGUI();
 
 private:
-  HtmlGrapheasKamvaWx panel;  ///< The AGG bitmap display panel
+  HtmlGrapheasKamvaWx mHgKamva;  ///< The AGG bitmap display panel
 
-  wxMenuBar* menuBar;  ///< Menu bar
-  wxMenu* fileMenu;  ///< File menu
-  wxMenu* helpMenu;  ///< Help menu
+  wxMenuBar* mMenuBar;  ///< Menu bar
+  wxMenu* mFileMenu;  ///< File menu
+  wxMenu* mHelpMenu;  ///< Help menu
 
 protected:
   DECLARE_EVENT_TABLE()  /// Allocate wxWidgets storage for event handlers
@@ -104,27 +104,27 @@ MainFrame::MainFrame(wxFrame* parent,
     const wxPoint& pos,
     const wxSize& size)
     : wxFrame(parent, wxID_ANY, title, pos, size)
-    , panel(this)
-    , menuBar(NULL)
-    , fileMenu(NULL)
-    , helpMenu(NULL)
+    , mHgKamva(this)
+    , mMenuBar(nullptr)
+    , mFileMenu(nullptr)
+    , mHelpMenu(nullptr)
 {
   // All menus are deleted by wxMenuBar
-  fileMenu = new wxMenu(wxT(""), wxMENU_TEAROFF);
-  fileMenu->Append(wxID_OPEN, _("&Open\tCtrl-O"), _("Open..."));
-  fileMenu->Append(wxID_EXIT, _("&Quit\tCtrl-Q"), _("Quit the application"));
+  mFileMenu = new wxMenu(wxT(""), wxMENU_TEAROFF);
+  mFileMenu->Append(wxID_OPEN, _("&Open\tCtrl-O"), _("Open..."));
+  mFileMenu->Append(wxID_EXIT, _("&Quit\tCtrl-Q"), _("Quit the application"));
 
-  helpMenu = new wxMenu(wxT(""), wxMENU_TEAROFF);
-  helpMenu->Append(wxID_ABOUT, _("About"), _("About"));
+  mHelpMenu = new wxMenu(wxT(""), wxMENU_TEAROFF);
+  mHelpMenu->Append(wxID_ABOUT, _("About"), _("About"));
 
   // Deleted by wxFrame
-  menuBar = new wxMenuBar;
-  menuBar->Append(fileMenu, _("&File"));
-  menuBar->Append(helpMenu, _("&Help"));
+  mMenuBar = new wxMenuBar;
+  mMenuBar->Append(mFileMenu, _("&File"));
+  mMenuBar->Append(mHelpMenu, _("&Help"));
 
   CreateStatusBar(2);
-  SetMenuBar(menuBar);
-  updateStatus(_("Nous sommes tous les pamplemousses."));
+  SetMenuBar(mMenuBar);
+  updateStatus(_("Html Grapheas status bar."));
 }
 
 MainFrame::~MainFrame()
@@ -158,7 +158,7 @@ void MainFrame::onAbout(wxCommandEvent& WXUNUSED(event))
 {
   wxMessageBox(
       _("Example of combining wxWidgets and the Anti-Grain Geometry renderer."),
-      _("About wxAGG"));
+      _("About Html Grapheas"));
 }
 
 void MainFrame::updateStatus(const wxString& s)
@@ -205,11 +205,11 @@ public:
   bool OnInit();
 
 protected:
-  MainFrame* frame;
+  MainFrame* mFrame;
 };  // class Application
 
 Application::Application()
-    : frame(NULL)
+    : mFrame(nullptr)
 {
   // empty
 }
@@ -218,11 +218,11 @@ Application::Application()
 bool Application::OnInit()
 {
   // Create a new window.
-  frame = new MainFrame((wxFrame*) NULL, _("wxAGG: A Cute Lion"),
-      wxDefaultPosition, wxSize(600, 600));
+  mFrame = new MainFrame((wxFrame*) nullptr, _("Html Grapheas"),
+      wxDefaultPosition, wxSize(640, 480));
 
-  SetTopWindow(frame);
-  frame->Show(true);
+  //SetTopWindow(frame);
+  mFrame->Show(true);
 
   // Can do something application-specific here with the wxApp member
   // variables argc and argv.
@@ -246,12 +246,12 @@ int main(int argc, char* argv[])
 {
   // Get HINSTANCE of current application.
   std::cout << "Console is attached\n";
-  HINSTANCE hInstance = GetModuleHandle(NULL);
+  HINSTANCE hInstance = GetModuleHandle(nullptr);
   // Get command line.
   wxCmdLineArgType lpCmdLine = (char*) GetCommandLine();
 
   // Create GUI window.
-  return wxEntry(hInstance, NULL, lpCmdLine, SW_SHOWNORMAL);
+  return wxEntry(hInstance, nullptr, lpCmdLine, SW_SHOWNORMAL);
 }
 
 #else  // !(defined(__WINDOWS__) && defined(ATTACH_WX_CONSOLE))
