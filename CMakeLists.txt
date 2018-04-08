@@ -44,8 +44,9 @@ endif()
 
 if(wxWidgets_PLATFORM)
   set(PLATFORM_WX_SRC_DIR ${PROJECT_SOURCE_DIR}/platform/wxWidgets)
-  set(USING_WX_SUB_DIR ON)
+
   list(APPEND CMAKE_MODULE_PATH "${PLATFORM_WX_SRC_DIR}/cmake")
+
   set(CMAKE_INSTALL_PREFIX "${PROJECT_BINARY_DIR}/install")
   
   # Use /MP flag in command line. Just specify /MP by itself to have
@@ -134,20 +135,6 @@ endif()
 
 
 #-----------------------------------------------------------------------
-# HtmlGrapheasKamva
-#-----------------------------------------------------------------------
-
-if(wxWidgets_PLATFORM AND USING_WX_SUB_DIR)
-  add_subdirectory(${HtmlGrapheasKamva_DIR})
-
-  # TODO: rewrite AGG's CMake scripts to exclude link_directories().
-  # AGG_LIBRARY_DIRS is cache var from AggConfig.cmake
-  # by find_package(Agg REQUIRED CONFIG) in HtmlGrapheasKamva.
-  link_directories(${AGG_LIBRARY_DIRS})
-endif()
-
-
-#-----------------------------------------------------------------------
 # Platforms
 #-----------------------------------------------------------------------
 
@@ -156,12 +143,8 @@ endif()
 #-----------------------------------------------------------------------
 
 if(wxWidgets_PLATFORM)
-  set(HtmlGrapheasKamva_PLATFORM_WX_DIR
-    "${HtmlGrapheasKamva_DIR}/src/hgkamva/platform/wxwidgets"
-  )
-  set(PLATFORM_WX_EXTERNAL_SRC_DIR "${PLATFORM_WX_SRC_DIR}/external")
-
   # Build, install and find wxWidgets library.
+  set(PLATFORM_WX_EXTERNAL_SRC_DIR "${PLATFORM_WX_SRC_DIR}/external")
   include(build_wxwidgets) # In ${PLATFORM_WX_SRC_DIR}/cmake
 
   # HtmlGrapheasApp

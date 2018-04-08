@@ -39,14 +39,14 @@ list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_WX_SRC_DIR}/cmake/modules")
 
 set(WX_lib_VERSION "3.1.1")
 set(WX_lib_COMPONENTS core base)
-if(NOT DEFINED USING_WX_SUB_DIR)
-  set(USING_WX_SUB_DIR ON)
-endif()
+set(WX_USE_FIND_PACKAGE_MODULE OFF)
 
 set(WX_DOWNLOAD_DIR "${EXTERNAL_DOWNLOAD_DIR}")
 set(WX_UNPACKED_SRC_DIR "${EXTERNAL_UNPACKED_SRC_DIR}")
 set(WX_BUILD_DIR "${EXTERNAL_BIN_DIR}/build_wxwidgets")
 
+# Used only for wxWidgets 3.1.0.
+# TODO: remove it with all files in dir "cmake/modules/build_cmake".
 set(COPY_WX_CMAKE_BUILD_SCRIPTS OFF)
 
 set(wxWidgets_ROOT_DIR "${EXTERNAL_INSTALL_DIR}")
@@ -80,7 +80,7 @@ cmr_wx_option(wxBUILD_TESTS "Build console tests (CONSOLE_ONLY) or ALL" OFF
 cmr_wx_option(wxBUILD_DEMOS "Build demos" OFF)
 cmr_wx_option(wxBUILD_PRECOMP "Use precompiled headers" ON)
 cmr_wx_option(wxBUILD_INSTALL "Create install/uninstall target for wxWidgets"
-  ON
+  ${WX_USE_FIND_PACKAGE_MODULE}
 )
 cmr_wx_option(wxBUILD_COMPATIBILITY "Enable compatibilty with earlier wxWidgets versions"
   3.1
@@ -108,12 +108,12 @@ endif()
 
 # TODO: cmr_wx_option(wxUSE_*)
 
-# Exclude STC for version 3.1.0. TODO: remove it for 3.1.1.
-#cmr_wx_option(wxUSE_STC "use wxStyledTextCtrl library" OFF)
+# Exclude STC for version 3.1.1. TODO: check it for newer version.
+cmr_wx_option(wxUSE_STC "use wxStyledTextCtrl library" OFF)
 
 
 #-----------------------------------------------------------------------
-# Build and install the wxWidgets.
+# Configure for find_package.
 #-----------------------------------------------------------------------
 
 # TODO: needed?
@@ -131,47 +131,63 @@ endif()
 #set(wxWidgets_USE_UNICODE ON)
 
 
-# Try to find already installed lib.
-if(NOT USING_WX_SUB_DIR)
+if(WX_USE_FIND_PACKAGE_MODULE)
+  # Set CMake's search path for find_package(), find_program(), find_library(),
+  # find_file(), and find_path() commands.
+  list(APPEND CMAKE_PREFIX_PATH "${CMAKE_INSTALL_PREFIX}")
+  
+  if(ANDROID)
+    list(APPEND CMAKE_FIND_ROOT_PATH "${CMAKE_INSTALL_PREFIX}")
+  endif()
+endif()
+
+
+#-----------------------------------------------------------------------
+# Build the wxWidgets and include it.
+#-----------------------------------------------------------------------
+
+# Build the library at a config CMake phase.
+
+if(WX_USE_FIND_PACKAGE_MODULE)
   find_package(wxWidgets ${WX_lib_VERSION}
     COMPONENTS ${WX_lib_COMPONENTS} QUIET
   )
 endif()
 
-if(NOT wxWidgets_FOUND OR USING_WX_SUB_DIR)
-  if(NOT USING_WX_SUB_DIR)
-    cmr_print_message(
-      "wxWidgets is not installed, build and install it.")
-  endif()
+set(WX_lib_EXPORT_FILE "${WX_BUILD_DIR}/export-wxWidgets.cmake")
 
-  set(ONLY_CONFIGURE "")
-  if(USING_WX_SUB_DIR)
-    set(ONLY_CONFIGURE "ONLY_CONFIGURE")
-  endif()
+if(NOT wxWidgets_FOUND AND NOT EXISTS ${WX_lib_EXPORT_FILE})
+  cmr_print_message("wxWidgets is not built, build it.")
 
+  if(WX_USE_FIND_PACKAGE_MODULE)
+    set(WX_lib_BUILD_MODE "INSTALL")
+  else()
+    set(WX_lib_BUILD_MODE "BUILD")
+  endif()
+  
+  # Build specified library version.
   include(${LIBCMAKER_WX_SRC_DIR}/lib_cmaker_wxwidgets.cmake)
   lib_cmaker_wxwidgets(
     VERSION ${WX_lib_VERSION}
     DOWNLOAD_DIR ${WX_DOWNLOAD_DIR}
     UNPACKED_SRC_DIR ${WX_UNPACKED_SRC_DIR}
     BUILD_DIR ${WX_BUILD_DIR}
-    ${ONLY_CONFIGURE}
+    ${WX_lib_BUILD_MODE}
+    COMPONENTS ${WX_lib_COMPONENTS}
   )
-  
-  # wxWidgets
-  if(NOT USING_WX_SUB_DIR)
+
+  if(WX_USE_FIND_PACKAGE_MODULE)
     find_package(wxWidgets ${WX_lib_VERSION}
       COMPONENTS ${WX_lib_COMPONENTS} REQUIRED
     )
   endif()
   
 else()
-  cmr_print_message(
-    "wxWidgets is installed, skip building and installing it.")
+  cmr_print_message("wxWidgets is built, skip its building.")
 endif()
 
-if(USING_WX_SUB_DIR)
-  add_subdirectory(${WX_lib_SRC_DIR} ${WX_BUILD_DIR})
-else()
+if(WX_USE_FIND_PACKAGE_MODULE)
   include(${wxWidgets_USE_FILE})
+else()
+  include(${WX_lib_EXPORT_FILE})
 endif()
