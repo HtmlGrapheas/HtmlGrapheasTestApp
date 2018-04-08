@@ -107,8 +107,10 @@ else()
 endif()
 
 add_executable(${hga_EXE_NAME} ${WIN32GUI} ${exe_SOURCES} ${exe_HEADERS})
-set_property(TARGET ${hga_EXE_NAME} PROPERTY CXX_STANDARD 11)
-set_property(TARGET ${hga_EXE_NAME} PROPERTY C_STANDARD 11)
+set_target_properties(${hga_EXE_NAME} PROPERTIES
+  CXX_STANDARD 11
+  C_STANDARD 11
+)
 set_property(TARGET ${hga_EXE_NAME}
   PROPERTY RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}"
 )
