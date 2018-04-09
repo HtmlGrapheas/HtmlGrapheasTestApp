@@ -1,4 +1,4 @@
-goto license_header
+@goto license_header
 # ****************************************************************************
 #  Project:  HtmlGrapheas
 #  Purpose:  HTML text editor library
@@ -36,17 +36,18 @@ goto license_header
 @rem "-B" - specifies path to the build folder
 @rem "-H" - specifies path to the source folder
 
-
+@rem CMake 3.7 is minimum for generator "Visual Studio 15 2017".
 @set CMAKE_PATH="cmake"
 
 @set SOURCE_DIR=%~dp0
-@set BUILD_DIR=%~dp0build_wxms
+@set BUILD_DIR=%~dp0build_wx_msvc
 
 @set BUILD_TYPE=Debug
 @rem set BUILD_TYPE=Release
 
+
+@rem TODO: add prefix 'HG_' to all vars, which is defined project.
 @set ATTACH_WX_CONSOLE=ON
-@rem set ATTACH_WX_CONSOLE=OFF
 
 
 @if "%1" == "" goto win64
@@ -55,39 +56,60 @@ goto license_header
 @if /i %1 == win32_xp  goto win32_xp
 @if /i %1 == win32     goto win32
 @if /i %1 == win64     goto win64
+@if /i %1 == arm       goto arm
 @goto usage
 
 
 :win32_xp
-@set VS_GEN="Visual Studio 15 2017"
-@set XP_TOOL=-T v141_xp
+@set VS_GENERATORERATOR=-DCMAKE_GENERATOR="Visual Studio 15 2017"
+@set VS_PLATFORM=
+@set VS_TOOLSET=-DCMAKE_GENERATOR_TOOLSET="v141_xp"
 @goto :RunCMake
 
 :win32
-@set VS_GEN="Visual Studio 15 2017"
-@set XP_TOOL=
+@set VS_GENERATOR=-DCMAKE_GENERATOR="Visual Studio 15 2017"
+@set VS_PLATFORM=
+@set VS_TOOLSET=
 @goto :RunCMake
 
 :win64
-@set VS_GEN="Visual Studio 15 2017 Win64"
-@set XP_TOOL=
+@set VS_GENERATOR=-DCMAKE_GENERATOR="Visual Studio 15 2017"
+@set VS_PLATFORM=-DCMAKE_GENERATOR_PLATFORM=x64
+@set VS_TOOLSET=
 @goto :RunCMake
 
-@rem Use /MP flag in command line. Just specify /MP by itself to have
-@rem VS's build system automatically select how many threads to compile on
-@rem (which usually is the maximum number of threads available).
+:arm
+@set VS_GENERATOR=-DCMAKE_GENERATOR="Visual Studio 15 2017"
+@set VS_PLATFORM=-DCMAKE_GENERATOR_PLATFORM=ARM
+@set VS_TOOLSET=
+@goto :RunCMake
+
 
 :RunCMake
+@rem %CMAKE_PATH% --debug-output --trace-expand ^
 %CMAKE_PATH% ^
+ ^
  -H%SOURCE_DIR% ^
  -B%BUILD_DIR% ^
- -DATTACH_WX_CONSOLE=%ATTACH_WX_CONSOLE% ^
+ ^
+ %VS_GENERATOR% ^
+ %VS_PLATFORM% ^
+ %VS_TOOLSET% ^
+ ^
  -DCMAKE_BUILD_TYPE=%BUILD_TYPE% ^
- -DCMAKE_CXX_FLAGS="/MP" -DCMAKE_C_FLAGS="/MP" ^
- -G %VS_GEN% ^
- %XP_TOOL% ^
- -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON ^
- && %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE%
+ -DCMAKE_CONFIGURATION_TYPES=%BUILD_TYPE% ^
+ ^
+ -DATTACH_WX_CONSOLE=%ATTACH_WX_CONSOLE% ^
+ -DHG_BUILD_MSVC_MULTIPROC=ON ^
+ -DBUILD_TESTING=ON ^
+ ^
+ -Dcmr_PRINT_DEBUG=OFF ^
+ -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF ^
+ -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF ^
+ ^
+ && %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE% ^
+ && %CMAKE_PATH% -E env CTEST_OUTPUT_ON_FAILURE=1 ^
+    %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE% --target RUN_TESTS
 
 @goto :eof
 
