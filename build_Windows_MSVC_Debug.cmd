@@ -1,4 +1,4 @@
-goto license_header
+@goto license_header
 # ****************************************************************************
 #  Project:  HtmlGrapheas
 #  Purpose:  HTML text editor library
@@ -24,7 +24,8 @@ goto license_header
 :license_header
 
 @set CMAKE_PATH="cmake"
-@set BUILD_DIR=%~dp0build_wxms
-@set BUILD_TYPE=Release
 
-%CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE%
+@set BUILD_TYPE=Debug
+@set BUILD_DIR=%~dp0build_wx_msvc
+
+%CMAKE_CMD% --build %BUILD_DIR% --config %BUILD_TYPE%

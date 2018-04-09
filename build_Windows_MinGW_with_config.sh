@@ -1,4 +1,3 @@
-goto license_header
 # ****************************************************************************
 #  Project:  HtmlGrapheas
 #  Purpose:  HTML text editor library
@@ -21,10 +20,53 @@ goto license_header
 #    You should have received a copy of the GNU General Public License
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
-:license_header
 
-@set CMAKE_PATH="cmake"
-@set BUILD_DIR=%~dp0build_wxms
-@set BUILD_TYPE=Debug
+MINGW_HOME=/mingw32
+#MINGW_HOME=/mingw64
 
-%CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE%
+PATH=${MINGW_HOME}/bin:${PATH}
+
+CMAKE_CMD="cmake"
+
+BUILD_TYPE=Release
+
+SOURCE_DIR=./
+BUILD_DIR=./build_wx_mingw_msys/${BUILD_TYPE}
+
+
+ATTACH_WX_CONSOLE=ON
+
+
+# With "-lmsvcr*" tests crash.
+
+#${CMAKE_CMD} --debug-output --trace-expand \
+${CMAKE_CMD} \
+\
+    -H${SOURCE_DIR} \
+    -B${BUILD_DIR} \
+\
+    -G "MSYS Makefiles" \
+\
+    -DCMAKE_BUILD_TYPE=${BUILD_TYPE} \
+\
+    -DATTACH_WX_CONSOLE=${ATTACH_WX_CONSOLE} \
+    -DBUILD_TESTING=ON \
+\
+    -DCMAKE_C_STANDARD_LIBRARIES="-lmsvcr110 -static" \
+    -DCMAKE_CXX_STANDARD_LIBRARIES="-lmsvcr110 -static" \
+\
+    -Dcmr_PRINT_DEBUG=OFF \
+    -DCMAKE_VERBOSE_MAKEFILE:BOOL=ON \
+    -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF \
+\
+    -DCMAKE_COLOR_MAKEFILE=ON \
+\
+    && ${CMAKE_CMD} --build ${BUILD_DIR} -- -j6 \
+    && ${CMAKE_CMD} -E env CTEST_OUTPUT_ON_FAILURE=1 \
+       ${CMAKE_CMD} --build ${BUILD_DIR} --target test
+
+
+#    -DCMAKE_C_STANDARD_LIBRARIES="-static" \
+#    -DCMAKE_CXX_STANDARD_LIBRARIES="-static" \
+
+#    -DCMAKE_INSTALL_PREFIX=inst \

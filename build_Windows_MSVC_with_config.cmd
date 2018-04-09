@@ -37,13 +37,14 @@
 @rem "-H" - specifies path to the source folder
 
 @rem CMake 3.7 is minimum for generator "Visual Studio 15 2017".
-@set CMAKE_PATH="cmake"
+@set CMAKE_CMD="cmake"
 
-@set SOURCE_DIR=%~dp0
-@set BUILD_DIR=%~dp0build_wx_msvc
 
 @set BUILD_TYPE=Debug
 @rem set BUILD_TYPE=Release
+
+@set SOURCE_DIR=%~dp0
+@set BUILD_DIR=%~dp0build_wx_msvc
 
 
 @rem TODO: add prefix 'HG_' to all vars, which is defined project.
@@ -86,8 +87,8 @@
 
 
 :RunCMake
-@rem %CMAKE_PATH% --debug-output --trace-expand ^
-%CMAKE_PATH% ^
+@rem %CMAKE_CMD% --debug-output --trace-expand ^
+%CMAKE_CMD% ^
  ^
  -H%SOURCE_DIR% ^
  -B%BUILD_DIR% ^
@@ -107,9 +108,11 @@
  -DCMAKE_VERBOSE_MAKEFILE:BOOL=OFF ^
  -DCMAKE_EXPORT_COMPILE_COMMANDS=OFF ^
  ^
- && %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE% ^
- && %CMAKE_PATH% -E env CTEST_OUTPUT_ON_FAILURE=1 ^
-    %CMAKE_PATH% --build %BUILD_DIR% --config %BUILD_TYPE% --target RUN_TESTS
+ -DCMAKE_COLOR_MAKEFILE=ON ^
+ ^
+ && %CMAKE_CMD% --build %BUILD_DIR% --config %BUILD_TYPE% ^
+ && %CMAKE_CMD% -E env CTEST_OUTPUT_ON_FAILURE=1 ^
+    %CMAKE_CMD% --build %BUILD_DIR% --config %BUILD_TYPE% --target RUN_TESTS
 
 @goto :eof
 
