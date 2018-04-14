@@ -50,5 +50,4 @@ build/
 
 # Main project
 .downloads/
-build_android/
-build_wx*/
+build*/
