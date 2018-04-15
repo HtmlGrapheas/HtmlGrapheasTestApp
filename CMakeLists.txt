@@ -165,9 +165,20 @@ endmacro()
 
 fix_default_compiler_settings()
 
-if(MSVC AND HG_BUILD_MSVC_MULTIPROC)
-  set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP")
-  set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP")
+if(NOT DEFINED cmr_BUILD_MULTIPROC)
+  set(cmr_BUILD_MULTIPROC ON)
+endif()
+
+if(cmr_BUILD_MULTIPROC OR cmr_BUILD_MULTIPROC_CNT)
+  if(NOT cmr_BUILD_MULTIPROC_CNT)
+    set(cmr_BUILD_MULTIPROC_CNT "")
+  endif()
+  
+  # Enable /MP flag for Visual Studio 2008 and greater.
+  if(MSVC AND MSVC_VERSION GREATER 1400)
+    set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP${cmr_BUILD_MULTIPROC_CNT}")
+    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} /MP${cmr_BUILD_MULTIPROC_CNT}")
+  endif()
 endif()
 
 
