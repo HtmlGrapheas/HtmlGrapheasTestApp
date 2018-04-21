@@ -38,13 +38,15 @@ android {
   }
   buildTypes {
     release {
+      debuggable false
+      jniDebuggable false
       minifyEnabled false
       proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
     }
-//    debug {
-//// TODO: needed?
-//      jniDebuggable true
-//    }
+    debug {
+      debuggable true
+      jniDebuggable true
+    }
   }
 }
 
