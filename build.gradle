@@ -21,6 +21,48 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
+import com.android.builder.core.BuilderConstants
+
+//-----------------------------------------------------------------------
+// Common vars for all modules
+//-----------------------------------------------------------------------
+
+ext {
+  buildGradleDebug = true // for debug
+
+  ignoreVariantBuildType = ""
+
+  buildToolsVersion = "27.0.3"
+
+  compileSdkVersion = 26
+  targetSdkVersion = 26
+  // Support for ICS (android-14 and android-15) will be removed from r18.
+  minSdkVersion = 16
+  supportLibVersion = "26.1.0"
+
+  // Support for ARMv5 (armeabi), MIPS, and MIPS64 has been removed from NDK r17.
+  //abiFilters = ["armeabi", "armeabi-v7a", "x86", "mips", "arm64-v8a", "x86_64", "mips64"]
+  abiFilters = ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+
+  rootBuildDir = "${rootDir}/build_android/${rootProject.name}"
+  rootNativeBuildDir = "${rootBuildDir}/.nativeBuild"
+
+  if (rootProject.hasProperty("buildGradleDebug") &&
+      rootProject.buildGradleDebug) {
+
+    ignoreVariantBuildType = BuilderConstants.RELEASE
+
+//  abiFilters = ["arm64-v8a"]
+//  abiFilters = ["armeabi-v7a"]
+//  abiFilters = ["x86_64"]
+    abiFilters = ["x86"]
+  }
+}
+
+//-----------------------------------------------------------------------
+// Root project properties
+//-----------------------------------------------------------------------
+
 buildscript {
 
   repositories {
@@ -42,8 +84,7 @@ allprojects {
   }
 
 // https://stackoverflow.com/a/29116723
-  buildDir =
-      "${rootDir}/build_android/build/${rootProject.name}/${project.name}"
+  buildDir = "${rootBuildDir}/${project.name}"
 }
 
 task clean(type: Delete) {
@@ -70,3 +111,26 @@ task clean(type: Delete) {
 //  }
 //}
 //apply plugin: "com.dorongold.task-tree"
+
+//-----------------------------------------------------------------------
+// Debug printing
+//-----------------------------------------------------------------------
+
+if (rootProject.hasProperty("buildGradleDebug") &&
+    rootProject.buildGradleDebug) {
+  println "================================================================"
+  println "Properties of module '${project.name}':"
+  println "================================================================"
+  println "ignoreVariantBuildType == ${ignoreVariantBuildType}"
+  println "buildToolsVersion == ${buildToolsVersion}"
+  println "compileSdkVersion == ${compileSdkVersion}"
+  println "targetSdkVersion == ${targetSdkVersion}"
+  println "minSdkVersion == ${minSdkVersion}"
+  println "supportLibVersion == ${supportLibVersion}"
+  println "abiFilters == ${abiFilters}"
+  println "rootBuildDir == ${rootBuildDir}"
+  println "rootProject.allprojects.buildDir == ${rootProject.allprojects.buildDir}"
+  println "project.buildDir == ${project.buildDir}"
+  println "rootNativeBuildDir == ${rootNativeBuildDir}"
+  println "================================================================"
+}

@@ -23,14 +23,76 @@
 
 apply plugin: "com.android.application"
 
+//-----------------------------------------------------------------------
+// Common vars from root project
+//-----------------------------------------------------------------------
+
+def ignoreVariantBuildType = ""
+if (rootProject.hasProperty("ignoreVariantBuildType")) {
+  ignoreVariantBuildType = rootProject.ignoreVariantBuildType
+}
+
+def buildToolsVer = "27.0.3"
+if (rootProject.hasProperty("buildToolsVersion")) {
+  buildToolsVer = rootProject.buildToolsVersion
+}
+
+def compileSdkVer = 26
+if (rootProject.hasProperty("compileSdkVersion")) {
+  compileSdkVer = rootProject.compileSdkVersion
+}
+
+def targetSdkVer = 26
+if (rootProject.hasProperty("targetSdkVersion")) {
+  targetSdkVer = rootProject.targetSdkVersion
+}
+
+def minSdkVer = 16
+if (rootProject.hasProperty("minSdkVersion")) {
+  minSdkVer = rootProject.minSdkVersion
+}
+
+def supportLibVer = "26.1.0"
+if (rootProject.hasProperty("supportLibVersion")) {
+  supportLibVer = rootProject.supportLibVersion
+}
+
+def abiFilts = ["armeabi-v7a", "arm64-v8a", "x86", "x86_64"]
+if (rootProject.hasProperty("abiFilters")) {
+  abiFilts = rootProject.abiFilters
+}
+
+def rootBuildDir = "${rootDir}/build_android/${rootProject.name}"
+if (rootProject.hasProperty("rootBuildDir")) {
+  rootBuildDir = rootProject.rootBuildDir
+}
+
+def rootNativeBuildDir = "${rootBuildDir}/.nativeBuild"
+if (rootProject.hasProperty("rootNativeBuildDir")) {
+  rootNativeBuildDir = rootProject.rootNativeBuildDir
+}
+
+//-----------------------------------------------------------------------
+// Module properties
+//-----------------------------------------------------------------------
+
+// https://stackoverflow.com/a/32129704
+//import com.android.builder.core.BuilderConstants
+android.variantFilter { variant ->
+//  if (build == BuilderConstants.RELEASE) {
+  if (variant.buildType.name == ignoreVariantBuildType) {
+    variant.setIgnore(true)
+  }
+}
+
 android {
-  compileSdkVersion 26
-  buildToolsVersion "27.0.3"
+  compileSdkVersion compileSdkVer
+  buildToolsVersion buildToolsVer
 
   defaultConfig {
     applicationId "ru.feographia.htmlgrapheasapp"
-    minSdkVersion 16
-    targetSdkVersion 26
+    minSdkVersion minSdkVer
+    targetSdkVersion targetSdkVer
     versionCode 1
     versionName "1.0"
     archivesBaseName = "htmlgrapheasapp-${versionName}-rev.${versionCode}"
@@ -54,10 +116,34 @@ dependencies {
   implementation fileTree(dir: "libs", include: ["*.jar"])
   implementation project(":AndroidLogcatStdouts")
   implementation project(":HtmlGrapheasKamva")
-  implementation "com.android.support:appcompat-v7:26.1.0"
+  implementation "com.android.support:appcompat-v7:${supportLibVer}"
   implementation "com.android.support.constraint:constraint-layout:1.1.0"
 
   testImplementation "junit:junit:4.12"
   androidTestImplementation "com.android.support.test:runner:1.0.1"
   androidTestImplementation "com.android.support.test.espresso:espresso-core:3.0.1"
+}
+
+//-----------------------------------------------------------------------
+// Debug printing
+//-----------------------------------------------------------------------
+
+if (rootProject.hasProperty("buildGradleDebug") &&
+    rootProject.buildGradleDebug) {
+  println "================================================================"
+  println "Properties of module '${project.name}':"
+  println "================================================================"
+  println "ignoreVariantBuildType == ${ignoreVariantBuildType}"
+  println "android.buildToolsVersion == ${android.buildToolsVersion}"
+  println "android.compileSdkVersion == ${android.compileSdkVersion}"
+  println "android.defaultConfig.targetSdkVersion == ${android.defaultConfig.targetSdkVersion}"
+  println "android.defaultConfig.minSdkVersion == ${android.defaultConfig.minSdkVersion}"
+  println "supportLibVer == ${supportLibVer}"
+  println "android.defaultConfig.ndk.abiFilters == ${android.defaultConfig.ndk.abiFilters}"
+  println "android.defaultConfig.externalNativeBuild.cmake.abiFilters == ${android.defaultConfig.externalNativeBuild.cmake.abiFilters}"
+  println "rootBuildDir == ${rootBuildDir}"
+  println "rootProject.allprojects.buildDir == ${rootProject.allprojects.buildDir}"
+  println "project.buildDir == ${project.buildDir}"
+  println "android.externalNativeBuild.cmake.buildStagingDirectory == ${android.externalNativeBuild.cmake.buildStagingDirectory}"
+  println "================================================================"
 }
