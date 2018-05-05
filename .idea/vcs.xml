@@ -13,6 +13,7 @@
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_FreeType" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_GoogleTest" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_HarfBuzz" vcs="Git" />
+    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_STLCache" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts" vcs="Git" />
   </component>
 </project>
