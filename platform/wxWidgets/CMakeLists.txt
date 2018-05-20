@@ -31,7 +31,7 @@ if(NOT HtmlGrapheasKamva_DIR)
 endif()
 
 set(HtmlGrapheasKamvaWx_DIR
-  "${HtmlGrapheasKamva_DIR}/src/hgkamva/platform/wxwidgets"
+  "${HtmlGrapheasKamva_DIR}/platform/wxwidgets"
 )
 
 add_subdirectory(
