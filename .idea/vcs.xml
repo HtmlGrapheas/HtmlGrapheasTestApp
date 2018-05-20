@@ -6,7 +6,6 @@
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheas" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_AGG" vcs="Git" />
-    <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_Allegro" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_Dirent" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_Expat" vcs="Git" />
     <mapping directory="$PROJECT_DIR$/HtmlGrapheasKamva/external/LibCMaker_FontConfig" vcs="Git" />
