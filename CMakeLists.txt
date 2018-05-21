@@ -124,8 +124,11 @@ set(LIBCMAKER_SRC_DIR "${HtmlGrapheasKamva_DIR}/external/LibCMaker")
 list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
 
 # Standard CMake vars.
+
 # We must set this variable explicitly for the wxWidgets static lib building.
-set(BUILD_SHARED_LIBS OFF)
+if(NOT DEFINED BUILD_SHARED_LIBS)
+  set(BUILD_SHARED_LIBS OFF)
+endif()
 
 #set(SKIP_INSTALL_HEADERS ON)
 #set(SKIP_INSTALL_LIBRARIES ON)
