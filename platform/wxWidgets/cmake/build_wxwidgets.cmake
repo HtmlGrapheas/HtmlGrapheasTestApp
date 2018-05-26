@@ -45,10 +45,6 @@ set(WX_DOWNLOAD_DIR "${EXTERNAL_DOWNLOAD_DIR}")
 set(WX_UNPACKED_SRC_DIR "${EXTERNAL_UNPACKED_SRC_DIR}")
 set(WX_BUILD_DIR "${EXTERNAL_BIN_DIR}/build_wxwidgets")
 
-# Used only for wxWidgets 3.1.0.
-# TODO: remove it with all files in dir "cmake/modules/build_cmake".
-set(COPY_WX_CMAKE_BUILD_SCRIPTS OFF)
-
 set(wxWidgets_ROOT_DIR "${EXTERNAL_INSTALL_DIR}")
 set(ENV{wxWidgets_ROOT_DIR} "${wxWidgets_ROOT_DIR}")
 
