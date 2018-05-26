@@ -21,25 +21,27 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-package ru.feographia.htmlgrapheasapp;
+package ru.htmlgrapheas.htmlgrapheasapp;
 
-import org.junit.Test;
+import android.support.v7.app.AppCompatActivity;
+import android.os.Bundle;
+import ru.htmlgrapheas.htmlgrapheaskamva.HtmlGrapheasView;
+import ru.nfeotools.alogstd.AndroidLogcatStdoutsJni;
 
-import static org.junit.Assert.*;
 
-
-/**
- * Example local unit test, which will execute on the development machine
- * (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest
+public class MainActivity
+    extends AppCompatActivity
 {
-  @Test
-  public void addition_isCorrect()
-      throws Exception
+  private HtmlGrapheasView mMainView;
+
+  @Override
+  protected void onCreate(Bundle savedInstanceState)
   {
-    assertEquals(4, 2 + 2);
+    super.onCreate(savedInstanceState);
+
+    AndroidLogcatStdoutsJni.init("HtmlGrapheas", "-Hg--");
+
+    mMainView = new HtmlGrapheasView(this);
+    setContentView(mMainView);
   }
 }

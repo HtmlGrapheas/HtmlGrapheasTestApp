@@ -21,27 +21,33 @@
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
 
-package ru.feographia.htmlgrapheasapp;
+package ru.htmlgrapheas.htmlgrapheasapp;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import ru.feographia.androidlogcatstdouts.AndroidLogcatStdoutsJni;
-import ru.feographia.htmlgrapheaskamva.HtmlGrapheasView;
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
+
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
 
 
-public class MainActivity
-    extends AppCompatActivity
+/**
+ * Instrumented test, which will execute on an Android device.
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ */
+@RunWith(AndroidJUnit4.class)
+public class ExampleInstrumentedTest
 {
-  private HtmlGrapheasView mMainView;
-
-  @Override
-  protected void onCreate(Bundle savedInstanceState)
+  @Test
+  public void useAppContext()
+      throws Exception
   {
-    super.onCreate(savedInstanceState);
+    // Context of the app under test.
+    Context appContext = InstrumentationRegistry.getTargetContext();
 
-    AndroidLogcatStdoutsJni.init();
-
-    mMainView = new HtmlGrapheasView(this);
-    setContentView(mMainView);
+    assertEquals("ru.nfeotools.alogstd", appContext.getPackageName());
   }
 }

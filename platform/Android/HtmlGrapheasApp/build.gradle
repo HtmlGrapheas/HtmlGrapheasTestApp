@@ -115,7 +115,7 @@ android {
   buildToolsVersion buildToolsVer
 
   defaultConfig {
-    applicationId "ru.feographia.htmlgrapheasapp"
+    applicationId "ru.htmlgrapheas.htmlgrapheasapp"
     minSdkVersion minSdkVer
     targetSdkVersion targetSdkVer
     versionCode 1
