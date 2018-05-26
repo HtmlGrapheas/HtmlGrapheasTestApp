@@ -1,3 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
 /*****************************************************************************
  * Project:  HtmlGrapheas
  * Purpose:  HTML text editor library
@@ -20,26 +22,26 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
+  -->
 
-package ru.feographia.htmlgrapheasstasi;
+<android.support.constraint.ConstraintLayout
+    android:layout_height="match_parent"
+    android:layout_width="match_parent"
+    tools:context="ru.feographia.htmlgrapheasapp.MainActivity"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    >
 
-import org.junit.Test;
+  <TextView
+      android:id="@+id/sample_text"
+      android:layout_height="wrap_content"
+      android:layout_width="wrap_content"
+      android:text="Hello World!"
+      app:layout_constraintBottom_toBottomOf="parent"
+      app:layout_constraintLeft_toLeftOf="parent"
+      app:layout_constraintRight_toRightOf="parent"
+      app:layout_constraintTop_toTopOf="parent"
+      />
 
-import static org.junit.Assert.*;
-
-
-/**
- * Example local unit test, which will execute on the development machine
- * (host).
- *
- * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
- */
-public class ExampleUnitTest
-{
-  @Test
-  public void addition_isCorrect()
-      throws Exception
-  {
-    assertEquals(4, 2 + 2);
-  }
-}
+</android.support.constraint.ConstraintLayout>

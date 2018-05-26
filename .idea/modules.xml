@@ -3,9 +3,9 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" filepath="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts/AndroidLogcatStdouts.iml" />
-      <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasApp.iml" filepath="$PROJECT_DIR$/HtmlGrapheasApp.iml" />
+      <module fileurl="file://$PROJECT_DIR$/platform/Android/HtmlGrapheasApp/HtmlGrapheasApp.iml" filepath="$PROJECT_DIR$/platform/Android/HtmlGrapheasApp/HtmlGrapheasApp.iml" />
       <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" filepath="$PROJECT_DIR$/HtmlGrapheasKamva/HtmlGrapheasKamva.iml" />
-      <module fileurl="file://$PROJECT_DIR$/platform/Android/HtmlGrapheasStasi/HtmlGrapheasStasi.iml" filepath="$PROJECT_DIR$/platform/Android/HtmlGrapheasStasi/HtmlGrapheasStasi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/HtmlGrapheasTestApp.iml" filepath="$PROJECT_DIR$/HtmlGrapheasTestApp.iml" />
     </modules>
   </component>
 </project>

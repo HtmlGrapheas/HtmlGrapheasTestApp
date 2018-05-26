@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*****************************************************************************
  * Project:  HtmlGrapheas
  * Purpose:  HTML text editor library
@@ -22,26 +20,35 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-  -->
 
-<android.support.constraint.ConstraintLayout
-    android:layout_height="match_parent"
-    android:layout_width="match_parent"
-    tools:context="ru.feographia.htmlgrapheasstasi.MainActivity"
-    xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
-    >
+package ru.feographia.htmlgrapheasapp;
 
-  <TextView
-      android:id="@+id/sample_text"
-      android:layout_height="wrap_content"
-      android:layout_width="wrap_content"
-      android:text="Hello World!"
-      app:layout_constraintBottom_toBottomOf="parent"
-      app:layout_constraintLeft_toLeftOf="parent"
-      app:layout_constraintRight_toRightOf="parent"
-      app:layout_constraintTop_toTopOf="parent"
-      />
+import android.content.Context;
+import android.support.test.InstrumentationRegistry;
+import android.support.test.runner.AndroidJUnit4;
 
-</android.support.constraint.ConstraintLayout>
+import org.junit.Test;
+import org.junit.runner.RunWith;
+
+import static org.junit.Assert.*;
+
+
+/**
+ * Instrumented test, which will execute on an Android device.
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ */
+@RunWith(AndroidJUnit4.class)
+public class ExampleInstrumentedTest
+{
+  @Test
+  public void useAppContext()
+      throws Exception
+  {
+    // Context of the app under test.
+    Context appContext = InstrumentationRegistry.getTargetContext();
+
+    assertEquals(
+        "ru.feographia.htmlgrapheasapp_android", appContext.getPackageName());
+  }
+}

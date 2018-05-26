@@ -84,21 +84,14 @@ set(exe_HEADERS
 )
 
 set(exe_SOURCES
-# wxWidgets examples.
-#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_hello_world.cpp
-#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_scrolled_window.cpp
-#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_custom_button.cpp
-#  ${PLATFORM_WX_SRC_DIR}/src/wx_examples/wx_ex_basic_draw_pane.cpp
-
-# HtmlGrapheasApp
   ${PLATFORM_WX_SRC_DIR}/src/hgapp/main.cpp
 )
 
 if(WIN32 AND NOT ATTACH_WX_CONSOLE)
   # See docs for add_executable().
-  set(WIN32GUI WIN32)    
+  set(WIN32GUI WIN32)
 else()
-  set(WIN32GUI "")    
+  set(WIN32GUI "")
 endif()
 
 add_executable(${hga_EXE_NAME} ${WIN32GUI} ${exe_SOURCES} ${exe_HEADERS})

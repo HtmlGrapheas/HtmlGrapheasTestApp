@@ -1,5 +1,3 @@
-<?xml version="1.0" encoding="utf-8"?>
-<!--
 /*****************************************************************************
  * Project:  HtmlGrapheas
  * Purpose:  HTML text editor library
@@ -22,29 +20,26 @@
  *    You should have received a copy of the GNU General Public License
  *    along with this program. If not, see <http://www.gnu.org/licenses/>.
  ****************************************************************************/
-  -->
 
-<manifest package="ru.feographia.htmlgrapheasstasi"
-          xmlns:android="http://schemas.android.com/apk/res/android"
-    >
+package ru.feographia.htmlgrapheasapp;
 
-  <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+import org.junit.Test;
 
-  <application
-      android:allowBackup="true"
-      android:icon="@mipmap/ic_launcher"
-      android:label="@string/app_name"
-      android:roundIcon="@mipmap/ic_launcher_round"
-      android:supportsRtl="true"
-      android:theme="@style/AppTheme"
-      >
-    <activity android:name="ru.feographia.htmlgrapheasstasi.MainActivity">
-      <intent-filter>
-        <action android:name="android.intent.action.MAIN"/>
+import static org.junit.Assert.*;
 
-        <category android:name="android.intent.category.LAUNCHER"/>
-      </intent-filter>
-    </activity>
-  </application>
 
-</manifest>
+/**
+ * Example local unit test, which will execute on the development machine
+ * (host).
+ *
+ * @see <a href="http://d.android.com/tools/testing">Testing documentation</a>
+ */
+public class ExampleUnitTest
+{
+  @Test
+  public void addition_isCorrect()
+      throws Exception
+  {
+    assertEquals(4, 2 + 2);
+  }
+}

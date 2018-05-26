@@ -86,6 +86,31 @@ android.variantFilter { variant ->
 }
 
 android {
+  // DO NOT PUBLIC the file 'keystore.properties' !!!
+  File keystorePropertiesFile = project.file('keystore.properties')
+  if (!keystorePropertiesFile.exists()) {
+    throw new GradleException(
+        "File 'keystore.properties' in the project is not found.")
+  }
+
+  Properties keystoreProperties = new Properties()
+  keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+  if (!keystoreProperties.containsKey("storeFile") ||
+      !keystoreProperties.containsKey("storePassword") ||
+      !keystoreProperties.containsKey("keyAlias") ||
+      !keystoreProperties.containsKey("keyPassword")) {
+    throw new GradleException(
+        "Required properties is not set in file 'keystore.properties'.")
+  }
+
+  signingConfigs {
+    releaseKeyConfig {
+      storeFile file(keystoreProperties["storeFile"])
+      storePassword keystoreProperties["storePassword"]
+      keyAlias keystoreProperties["keyAlias"]
+      keyPassword keystoreProperties["keyPassword"]
+    }
+  }
   compileSdkVersion compileSdkVer
   buildToolsVersion buildToolsVer
 
@@ -104,6 +129,7 @@ android {
       jniDebuggable false
       minifyEnabled false
       proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+      signingConfig signingConfigs.releaseKeyConfig
     }
     debug {
       debuggable true
