@@ -58,6 +58,8 @@ ext {
   rootBuildDir = "${rootDir}/build_android/${rootProject.name}"
   rootNativeBuildDir = "${rootBuildDir}/.nativeBuild"
 
+  appAssetDir = "${rootDir}/platform/Android/HtmlGrapheasApp/src/main/assets"
+
   if (rootProject.hasProperty("buildGradleDebug") &&
       rootProject.buildGradleDebug) {
 
