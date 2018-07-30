@@ -21,71 +21,109 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-#-----------------------------------------------------------------------
-# HtmlGrapheasKamvaWxWidgets
-#-----------------------------------------------------------------------
+cmake_minimum_required(VERSION 3.3)
 
-if(NOT HtmlGrapheasKamva_DIR)
+project(HtmlGrapheasAppWx CXX)
+
+set(app_NAME "html_grapheas")
+
+if(NOT HGKamva_DIR)
   message(FATAL_ERROR
-    "Please set HtmlGrapheasKamva_DIR with path to HtmlGrapheasKamva library.")
+    "Please set HGKamva_DIR with path to HtmlGrapheasKamva library.")
 endif()
 
-set(HtmlGrapheasKamvaWx_DIR
-  "${HtmlGrapheasKamva_DIR}/platform/wxwidgets"
-)
 
-add_subdirectory(
-  ${HtmlGrapheasKamvaWx_DIR}
-  ${PROJECT_BINARY_DIR}/HtmlGrapheasKamvaWx
-)
+#-----------------------------------------------------------------------
+# Configure external libs directories
+#-----------------------------------------------------------------------
+
+if(NOT EXTERNAL_DOWNLOAD_DIR)
+  set(EXTERNAL_DOWNLOAD_DIR "${CMAKE_CURRENT_LIST_DIR}/.downloads")
+endif()
+if(NOT EXTERNAL_UNPACKED_DIR)
+  set(EXTERNAL_UNPACKED_DIR "${PROJECT_BINARY_DIR}/external/sources")
+endif()
+if(NOT EXTERNAL_BIN_DIR)
+  set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
+endif()
+if(NOT EXTERNAL_INSTALL_DIR)
+  set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
+endif()
 
 
 #-----------------------------------------------------------------------
-# HtmlGrapheasApp
+# Configure to find_package()
 #-----------------------------------------------------------------------
 
-set(hga_EXE_NAME "html_grapheas")
+# Do NOT add this for wxWidgets. We must not use our FreeType for wxWidgets.
+# Set CMake's search path for find_*() commands.
+#list(APPEND CMAKE_PREFIX_PATH "${EXTERNAL_INSTALL_DIR}")
+
+if(ANDROID)
+#  list(APPEND CMAKE_FIND_ROOT_PATH "${EXTERNAL_INSTALL_DIR}")
+endif()
 
 
 #-----------------------------------------------------------------------
 # Set path to LibCMaker root
 #-----------------------------------------------------------------------
 
-#set(LIBCMAKER_SRC_DIR "${PROJECT_SOURCE_DIR}/cmake/LibCMaker")
-# Uncomment it if need functions from LibCMaker
-#list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_SRC_DIR}/cmake/modules")
+set(LIBCMAKER_SRC_DIR "${HGKamva_DIR}/cmake/LibCMaker")
+
+list(APPEND CMAKE_MODULE_PATH
+  "${CMAKE_CURRENT_LIST_DIR}/cmake"
+  "${HGKamva_DIR}/cmake"
+  "${LIBCMAKER_SRC_DIR}/cmake/modules"
+)
+
+
+#-----------------------------------------------------------------------
+# Set vars to HtmlGrapheasAppWx
+#-----------------------------------------------------------------------
 
 # Standard CMake vars.
 #set(BUILD_SHARED_LIBS ON)
 
-#set(SKIP_INSTALL_HEADERS ON)
-#set(SKIP_INSTALL_LIBRARIES ON)
-#set(SKIP_INSTALL_ALL ON)
-
-# Set useful vars for lib_cmaker_*().
-#set(cmr_PRINT_DEBUG ON)
+# Library specific vars.
 
 
 #-----------------------------------------------------------------------
-# Configure for find_package.
+# Build, install and find required libraries
 #-----------------------------------------------------------------------
 
-# Append our installed libs path to CMake's search path for find_*() commands.
-#list(APPEND CMAKE_PREFIX_PATH "${EXTERNAL_INSTALL_DIR}")
+include(build_wxwidgets)
 
 
 #-----------------------------------------------------------------------
-# Link to the library
+# HtmlGrapheasKamva
 #-----------------------------------------------------------------------
 
-# Build test executables
+add_subdirectory("${HGKamva_DIR}" "${PROJECT_BINARY_DIR}/HtmlGrapheasKamva")
 
-set(exe_HEADERS
+
+
+#-----------------------------------------------------------------------
+# HtmlGrapheasKamvaWx
+#-----------------------------------------------------------------------
+
+set(HGKamvaWx_DIR "${HGKamva_DIR}/platform/wxwidgets")
+
+add_subdirectory("${HGKamvaWx_DIR}" "${PROJECT_BINARY_DIR}/HtmlGrapheasKamvaWx")
+
+
+#-----------------------------------------------------------------------
+# HtmlGrapheasAppWx
+#-----------------------------------------------------------------------
+
+set(private_src_DIR "${CMAKE_CURRENT_LIST_DIR}/src")
+set(interface_src_DIR "${CMAKE_INSTALL_INCLUDEDIR}")
+set(build_src_DIR
+  "$<BUILD_INTERFACE:${private_src_DIR}>"
 )
-
-set(exe_SOURCES
-  ${PLATFORM_WX_SRC_DIR}/src/hgapp/main.cpp
+set(install_src_DIR
+  "$<INSTALL_INTERFACE:${interface_src_DIR}>"
 )
+set(public_src_DIR "${build_src_DIR}${install_src_DIR}")
 
 if(WIN32 AND NOT ATTACH_WX_CONSOLE)
   # See docs for add_executable().
@@ -94,33 +132,49 @@ else()
   set(WIN32GUI "")
 endif()
 
-add_executable(${hga_EXE_NAME} ${WIN32GUI} ${exe_SOURCES} ${exe_HEADERS})
-set_target_properties(${hga_EXE_NAME} PROPERTIES
+add_executable(${app_NAME} ${WIN32GUI} "")
+set_target_properties(${app_NAME} PROPERTIES
   CXX_STANDARD 11
   C_STANDARD 11
 )
-set_property(TARGET ${hga_EXE_NAME}
+set_property(TARGET ${app_NAME}
   PROPERTY RUNTIME_OUTPUT_DIRECTORY "${PROJECT_BINARY_DIR}"
 )
 if(ATTACH_WX_CONSOLE)
-  target_compile_definitions(${hga_EXE_NAME} PRIVATE ATTACH_WX_CONSOLE)
+  target_compile_definitions(${app_NAME} PRIVATE ATTACH_WX_CONSOLE)
 endif()
 
-# HtmlGrapheasKamvaWx with HtmlGrapheasKamva
-target_link_libraries(${hga_EXE_NAME} PRIVATE htmlgrapheaskamvawx)
+target_include_directories(${app_NAME} PRIVATE ${private_src_DIR})
+
+target_sources(${app_NAME}
+  PRIVATE
+    ${private_src_DIR}/hgapp/main.cpp
+)
+
+
+#-----------------------------------------------------------------------
+# Link to the libraries
+#-----------------------------------------------------------------------
+
+# HtmlGrapheasKamvaWx
+target_link_libraries(${app_NAME} PRIVATE hgkamvawx)
 
 # wxWidgets
-# Used from HtmlGrapheasKamvaWx.
-#if(WX_USE_FIND_PACKAGE_MODULE)
-#  target_compile_definitions(${hga_EXE_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
-#  target_include_directories(${hga_EXE_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
-#  target_link_libraries(${hga_EXE_NAME} PRIVATE ${wxWidgets_LIBRARIES})
-#  # TODO:
-#  #COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
-#  #wxWidgets_CXX_FLAGS
-#else()
-#  target_link_libraries(${hga_EXE_NAME} PRIVATE ${WX_lib_COMPONENTS})
-#endif()
+if(WX_USE_FIND_PACKAGE_MODULE)
+  target_compile_definitions(${app_NAME} PRIVATE ${wxWidgets_DEFINITIONS})
+  target_include_directories(${app_NAME} PRIVATE ${wxWidgets_INCLUDE_DIRS})
+  target_link_libraries(${app_NAME} PRIVATE ${wxWidgets_LIBRARIES})
+  # TODO:
+  #COMPILE_DEFINITIONS_DEBUG ${wxWidgets_DEFINITIONS_DEBUG}
+  #wxWidgets_CXX_FLAGS
+else()
+  target_link_libraries(${app_NAME} PRIVATE ${WX_lib_COMPONENTS})
+endif()
+
+
+#-----------------------------------------------------------------------
+# Test data to debug of app running
+#-----------------------------------------------------------------------
 
 if(BUILD_TESTING)
   set(WX_HGRAPH_TEST_DIR "${PROJECT_BINARY_DIR}")
@@ -131,28 +185,38 @@ if(BUILD_TESTING)
     COMMAND
       ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_FONT_DIR}"
 
+    # Arimo font files
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      # Arimo font files
-      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-BoldItalic.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Bold.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Italic.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Arimo/Arimo-Regular.ttf"
+      "${HGKamva_DIR}/fonts/Arimo/Arimo-BoldItalic.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Arimo/Arimo-Bold.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Arimo/Arimo-Italic.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Arimo/Arimo-Regular.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
 
-      # Tinos font files
-      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-BoldItalic.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Bold.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Italic.ttf"
-      "${HtmlGrapheasKamva_DIR}/fonts/Tinos/Tinos-Regular.ttf"
-
-      # To dir 'fonts'
+    # Tinos font files
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Tinos/Tinos-BoldItalic.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Tinos/Tinos-Bold.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Tinos/Tinos-Italic.ttf"
+      "${WX_HGRAPH_TEST_FONT_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/fonts/Tinos/Tinos-Regular.ttf"
       "${WX_HGRAPH_TEST_FONT_DIR}"
   )
 
   add_custom_target(prepare_wx_test_font_conf ALL
     COMMAND ${CMAKE_COMMAND} -E copy_directory
       "${CMAKE_INSTALL_PREFIX}/etc/fonts"
-
-      # To dir 'fonts'
       "${WX_HGRAPH_TEST_FONT_DIR}"
   )
 
@@ -161,10 +225,10 @@ if(BUILD_TESTING)
       ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_DATA_DIR}"
 
     COMMAND ${CMAKE_COMMAND} -E copy_if_different
-      "${HtmlGrapheasKamva_DIR}/test/data/master.css"
-      "${HtmlGrapheasKamva_DIR}/test/data/test.html"
-
-      # To dir 'data'
+      "${HGKamva_DIR}/test/data/master.css"
+      "${WX_HGRAPH_TEST_DATA_DIR}"
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+      "${HGKamva_DIR}/test/data/test.html"
       "${WX_HGRAPH_TEST_DATA_DIR}"
   )
 endif()
