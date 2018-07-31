@@ -68,11 +68,12 @@ endif()
 # Set path to LibCMaker root
 #-----------------------------------------------------------------------
 
-set(LIBCMAKER_SRC_DIR "${HGKamva_DIR}/cmake/LibCMaker")
+set(libcmaker_root_DIR "${HGKamva_DIR}/cmake/libcmaker")
+set(LIBCMAKER_SRC_DIR "${libcmaker_root_DIR}/LibCMaker")
 
 list(APPEND CMAKE_MODULE_PATH
-  "${CMAKE_CURRENT_LIST_DIR}/cmake"
-  "${HGKamva_DIR}/cmake"
+#  "${CMAKE_CURRENT_LIST_DIR}/cmake"
+  "${libcmaker_root_DIR}"
   "${LIBCMAKER_SRC_DIR}/cmake/modules"
 )
 
