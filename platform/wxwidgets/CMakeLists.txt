@@ -158,7 +158,7 @@ target_sources(${app_NAME}
 #-----------------------------------------------------------------------
 
 # HtmlGrapheasKamvaWx
-target_link_libraries(${app_NAME} PRIVATE hgkamvawx)
+target_link_libraries(${app_NAME} PRIVATE hgkamva_wx)
 
 # wxWidgets
 if(WX_USE_FIND_PACKAGE_MODULE)

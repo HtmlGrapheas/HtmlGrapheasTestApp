@@ -9,8 +9,8 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/HtmlGrapheasKamva" />
-            <option value="$PROJECT_DIR$/platform/Android/AndroidLogcatStdouts" />
-            <option value="$PROJECT_DIR$/platform/Android/HtmlGrapheasApp" />
+            <option value="$PROJECT_DIR$/external/android/AndroidLogcatStdouts" />
+            <option value="$PROJECT_DIR$/platform/android/HtmlGrapheasApp" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />

@@ -24,11 +24,11 @@
 // https://stackoverflow.com/a/24978161
 include "HtmlGrapheasApp"
 project(":HtmlGrapheasApp").projectDir =
-    new File("${rootDir}/platform/Android/HtmlGrapheasApp")
+    new File("${rootDir}/platform/android/HtmlGrapheasApp")
 
 include "AndroidLogcatStdouts"
 project(":AndroidLogcatStdouts").projectDir =
-    new File("${rootDir}/platform/Android/AndroidLogcatStdouts")
+    new File("${rootDir}/external/android/AndroidLogcatStdouts")
 
 include "HtmlGrapheasKamva"
 project(":HtmlGrapheasKamva").projectDir =
