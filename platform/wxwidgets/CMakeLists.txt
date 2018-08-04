@@ -232,4 +232,10 @@ if(BUILD_TESTING)
       "${HGKamva_DIR}/test/data/test.html"
       "${WX_HGRAPH_TEST_DATA_DIR}"
   )
+
+  add_dependencies(${app_NAME}
+    prepare_wx_test_fonts
+    prepare_wx_test_font_conf
+    prepare_wx_test_data
+  )
 endif()
