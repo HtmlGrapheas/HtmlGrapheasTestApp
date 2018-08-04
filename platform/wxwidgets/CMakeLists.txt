@@ -182,7 +182,7 @@ if(BUILD_TESTING)
   set(WX_HGRAPH_TEST_FONT_DIR "${WX_HGRAPH_TEST_DIR}/fonts")
   set(WX_HGRAPH_TEST_DATA_DIR "${WX_HGRAPH_TEST_DIR}/data")
 
-  add_custom_target(prepare_wx_test_fonts ALL
+  add_custom_target(prepare_wx_test_fonts
     COMMAND
       ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_FONT_DIR}"
 
@@ -215,13 +215,13 @@ if(BUILD_TESTING)
       "${WX_HGRAPH_TEST_FONT_DIR}"
   )
 
-  add_custom_target(prepare_wx_test_font_conf ALL
+  add_custom_target(prepare_wx_test_font_conf
     COMMAND ${CMAKE_COMMAND} -E copy_directory
       "${CMAKE_INSTALL_PREFIX}/etc/fonts"
       "${WX_HGRAPH_TEST_FONT_DIR}"
   )
 
-  add_custom_target(prepare_wx_test_data ALL
+  add_custom_target(prepare_wx_test_data
     COMMAND
       ${CMAKE_COMMAND} -E make_directory "${WX_HGRAPH_TEST_DATA_DIR}"
 
