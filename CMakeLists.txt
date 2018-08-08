@@ -82,46 +82,41 @@ endif()
 # Compiler flags
 #-----------------------------------------------------------------------
 
-# From Google Test sources.
-# Also see https://stackoverflow.com/a/14172871
-macro(fix_default_compiler_settings)
-  if (MSVC)
-    # For MSVC, CMake sets certain flags to defaults we want to override.
-    # This replacement code is taken from sample in the CMake Wiki at
-    # http://www.cmake.org/Wiki/CMake_FAQ#Dynamic_Replace.
-    foreach (flag_var
-      CMAKE_CXX_FLAGS 
-      CMAKE_CXX_FLAGS_DEBUG 
-      CMAKE_CXX_FLAGS_RELEASE
-      CMAKE_CXX_FLAGS_MINSIZEREL 
-      CMAKE_CXX_FLAGS_RELWITHDEBINFO
-      CMAKE_C_FLAGS 
-      CMAKE_C_FLAGS_DEBUG 
-      CMAKE_C_FLAGS_RELEASE
-      CMAKE_C_FLAGS_MINSIZEREL 
-      CMAKE_C_FLAGS_RELWITHDEBINFO
-    )
-      if (NOT BUILD_SHARED_LIBS)
-        # When Google Test is built as a shared library, it should also use
-        # shared runtime libraries.  Otherwise, it may end up with multiple
-        # copies of runtime library data in different modules, resulting in
-        # hard-to-find crashes. When it is built as a static library, it is
-        # preferable to use CRT as static libraries, as we don't have to rely
-        # on CRT DLLs being available. CMake always defaults to using shared
-        # CRT libraries, so we override that default here.
-        string(REPLACE "/MD" "/MT" ${flag_var} "${${flag_var}}")
-      endif()
-    endforeach()
-  endif()
-endmacro()
-
-fix_default_compiler_settings()
+if(MSVC AND NOT BUILD_SHARED_LIBS)
+  set(cmr_USE_MSVC_STATIC_RUNTIME ON)
+  
+  # Set MSVC static runtime flags for all configurations.
+  # See:
+  # https://stackoverflow.com/a/20804336
+  # https://stackoverflow.com/a/14172871
+  foreach(cfg "" ${CMAKE_CONFIGURATION_TYPES})
+    set(c_flag_var   CMAKE_C_FLAGS)
+    set(cxx_flag_var CMAKE_CXX_FLAGS)
+    if(cfg)
+      string(TOUPPER ${cfg} cfg_upper)
+      set(c_flag_var   "${c_flag_var}_${cfg_upper}")
+      set(cxx_flag_var "${cxx_flag_var}_${cfg_upper}")
+    endif()
+    if(${c_flag_var} MATCHES "/MD")
+      string(REPLACE "/MD" "/MT" ${c_flag_var} "${${c_flag_var}}")
+      set(${c_flag_var} ${${c_flag_var}} CACHE STRING
+        "Flags used by the C compiler during ${cfg_upper} builds." FORCE
+      )
+    endif()
+    if(${cxx_flag_var} MATCHES "/MD")
+      string(REPLACE "/MD" "/MT" ${cxx_flag_var} "${${cxx_flag_var}}")
+      set(${cxx_flag_var} ${${cxx_flag_var}} CACHE STRING
+        "Flags used by the CXX compiler during ${cfg_upper} builds." FORCE
+      )
+    endif()
+  endforeach()
+endif()
 
 if(NOT DEFINED cmr_BUILD_MULTIPROC)
   set(cmr_BUILD_MULTIPROC ON)
 endif()
 
-if(cmr_BUILD_MULTIPROC OR cmr_BUILD_MULTIPROC_CNT)
+if(cmr_BUILD_MULTIPROC)
   # Enable /MP flag for Visual Studio 2008 and greater.
   if(MSVC AND MSVC_VERSION GREATER 1400)
     set(CMAKE_C_FLAGS "${CMAKE_C_FLAGS} /MP${cmr_BUILD_MULTIPROC_CNT}")
@@ -142,6 +137,12 @@ endif()
 #-----------------------------------------------------------------------
 # wxWidgets (HtmlGrapheasAppWx)
 #-----------------------------------------------------------------------
+
+# To run the application on Linux with the shared libs which are installed
+# to the non standard path specified in CMAKE_INSTALL_PREFIX use:
+# LD_LIBRARY_PATH="<${CMAKE_INSTALL_PREFIX}>/lib:.:$LD_LIBRARY_PATH" ./html_grapheas
+# where <${CMAKE_INSTALL_PREFIX}> is path which is used
+# as value for CMAKE_INSTALL_PREFIX.
 
 if(wxWidgets_PLATFORM)
   set(HGAppWx_DIR ${PROJECT_SOURCE_DIR}/platform/wxwidgets)
