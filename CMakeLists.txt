@@ -128,9 +128,8 @@ endif()
 if(NOT cmr_BUILD_DIR)
   set(cmr_BUILD_DIR "${build_libs_DIR}/LibCMaker")
 endif()
-if(NOT cmr_INSTALL_DIR)
-  set(cmr_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-endif()
+
+set(cmr_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 if(NOT cmr_HOST_UNPACKED_DIR)
   set(cmr_HOST_UNPACKED_DIR "${cmr_UNPACKED_DIR}/.host_tools_sources")
@@ -139,7 +138,11 @@ if(NOT cmr_HOST_BUILD_DIR)
   set(cmr_HOST_BUILD_DIR "${cmr_BUILD_DIR}/.build_host_tools")
 endif()
 
-# Set path to LibCMaker root.
+
+#-----------------------------------------------------------------------
+# Set path to LibCMaker root
+#-----------------------------------------------------------------------
+
 set(LibCMaker_DIR "${libs_DIR}/LibCMaker")
 
 list(APPEND CMAKE_MODULE_PATH

@@ -28,8 +28,8 @@ project(":HtmlGrapheasApp").projectDir =
 
 include "AndroidLogcatStdouts"
 project(":AndroidLogcatStdouts").projectDir =
-    new File("${rootDir}/external/android/AndroidLogcatStdouts")
+    new File("${rootDir}/libs/AndroidLogcatStdouts")
 
 include "HtmlGrapheasKamva"
 project(":HtmlGrapheasKamva").projectDir =
-    new File("${rootDir}/HtmlGrapheasKamva")
+    new File("${rootDir}/libs/HtmlGrapheasKamva")
