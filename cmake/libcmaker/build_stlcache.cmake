@@ -21,54 +21,38 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find STLCache library
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
-# Set vars for LibCMaker_STLCache
-#-----------------------------------------------------------------------
+set(STLCACHE_lib_NAME      "STLCache")
+set(STLCACHE_lib_VERSION   "0.2.20180405")
+set(STLCACHE_lib_DIR     "${LibCMaker_libs_DIR}/LibCMaker_${STLCACHE_lib_NAME}")
 
-set(LIBCMAKER_STLCACHE_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_STLCache"
-)
-# To use our FindSTLCache.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_STLCACHE_SRC_DIR}/cmake")
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${STLCACHE_lib_DIR}/cmake/modules")
 
-set(STLCACHE_lib_VERSION    "0.2.20180405")
-set(STLCACHE_DOWNLOAD_DIR   "${EXTERNAL_DOWNLOAD_DIR}")
-set(STLCACHE_UNPACKED_DIR   "${EXTERNAL_UNPACKED_DIR}")
-set(STLCACHE_BUILD_DIR      "${EXTERNAL_BIN_DIR}/build_stlcache")
+
+#-----------------------------------------------------------------------
+# LibCMaker_<LibName> specific vars and options
+#-----------------------------------------------------------------------
 
 set(COPY_STLCACHE_CMAKE_BUILD_SCRIPTS ON)
 
-# Library specific vars and options.
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
 
 
 #-----------------------------------------------------------------------
-# Build and install the STLCache
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-# Try to find already installed lib.
-find_package(STLCache QUIET)
-
-if(NOT STLCACHE_FOUND)
-  cmr_print_status(
-    "STLCache is not installed, build and install it.")
-
-  include(${LIBCMAKER_STLCACHE_SRC_DIR}/lib_cmaker_stlcache.cmake)
-  lib_cmaker_stlcache(
-    VERSION       ${STLCACHE_lib_VERSION}
-    DOWNLOAD_DIR  ${STLCACHE_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${STLCACHE_UNPACKED_DIR}
-    BUILD_DIR     ${STLCACHE_BUILD_DIR}
-  )
-
-  find_package(STLCache REQUIRED)
-
-else()
-  cmr_print_status(
-    "STLCache is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${STLCACHE_lib_NAME}
+  VERSION         ${STLCACHE_lib_VERSION}
+  LIB_DIR         ${STLCACHE_lib_DIR}
+  REQUIRED
+)

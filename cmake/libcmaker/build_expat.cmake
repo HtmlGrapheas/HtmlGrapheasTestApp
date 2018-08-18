@@ -21,28 +21,29 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find Expat library
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
-# Set vars for LibCMaker_Expat
-#-----------------------------------------------------------------------
-
-set(LIBCMAKER_EXPAT_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_Expat"
-)
-# To use our FindEXPAT.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_EXPAT_SRC_DIR}/cmake")
-
+set(EXPAT_lib_NAME      "Expat")
 set(EXPAT_lib_VERSION   "2.2.5")
-set(EXPAT_DOWNLOAD_DIR  "${EXTERNAL_DOWNLOAD_DIR}")
-set(EXPAT_UNPACKED_DIR  "${EXTERNAL_UNPACKED_DIR}")
-set(EXPAT_BUILD_DIR     "${EXTERNAL_BIN_DIR}/build_expat")
+set(EXPAT_lib_DIR       "${LibCMaker_libs_DIR}/LibCMaker_${EXPAT_lib_NAME}")
 
-# Library specific vars and options.
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${EXPAT_lib_DIR}/cmake/modules")
+
+
+#-----------------------------------------------------------------------
+# LibCMaker_<LibName> specific vars and options
+#-----------------------------------------------------------------------
+
+#set(SKIP_INSTALL_ALL ON)
+
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
+
 option(BUILD_tools "build the xmlwf tool for expat library" OFF)
 option(BUILD_examples "build the examples for expat library" OFF)
 option(BUILD_tests "build the tests for expat library" OFF)
@@ -51,7 +52,8 @@ option(BUILD_tests "build the tests for expat library" OFF)
 option(BUILD_doc "build man page for xmlwf" OFF)
 option(USE_libbsd "utilize libbsd (for arc4random_buf)" OFF)
 # Option INSTALL is set in lib_cmaker_expat() by NOT SKIP_INSTALL_ALL.
-#option(INSTALL "install expat files in cmake install target" ON)
+# Set in 'cmr_build_rules_expat' as NOT SKIP_INSTALL_ALL.
+#option(INSTALL "install expat files in cmake install target" ${NOT SKIP_INSTALL_ALL})
 
 # Configuration options.
 set(XML_CONTEXT_BYTES 1024 CACHE STRING
@@ -66,27 +68,14 @@ endif()
 
 
 #-----------------------------------------------------------------------
-# Build and install the Expat
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-# Try to find already installed lib.
-find_package(EXPAT QUIET)
-
-if(NOT EXPAT_FOUND)
-  cmr_print_status(
-    "Expat is not installed, build and install it.")
-
-  include(${LIBCMAKER_EXPAT_SRC_DIR}/lib_cmaker_expat.cmake)
-  lib_cmaker_expat(
-    VERSION       ${EXPAT_lib_VERSION}
-    DOWNLOAD_DIR  ${EXPAT_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${EXPAT_UNPACKED_DIR}
-    BUILD_DIR     ${EXPAT_BUILD_DIR}
-  )
-
-  find_package(EXPAT REQUIRED)
-
-else()
-  cmr_print_status(
-    "Expat is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${EXPAT_lib_NAME}
+  VERSION         ${EXPAT_lib_VERSION}
+  LIB_DIR         ${EXPAT_lib_DIR}
+  REQUIRED
+  FIND_MODULE_NAME EXPAT
+)

@@ -34,51 +34,6 @@ endif()
 
 
 #-----------------------------------------------------------------------
-# Configure external libs directories
-#-----------------------------------------------------------------------
-
-if(NOT EXTERNAL_DOWNLOAD_DIR)
-  set(EXTERNAL_DOWNLOAD_DIR "${CMAKE_CURRENT_LIST_DIR}/.downloads")
-endif()
-if(NOT EXTERNAL_UNPACKED_DIR)
-  set(EXTERNAL_UNPACKED_DIR "${PROJECT_BINARY_DIR}/external/sources")
-endif()
-if(NOT EXTERNAL_BIN_DIR)
-  set(EXTERNAL_BIN_DIR "${PROJECT_BINARY_DIR}/external/build")
-endif()
-if(NOT EXTERNAL_INSTALL_DIR)
-  set(EXTERNAL_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
-endif()
-
-
-#-----------------------------------------------------------------------
-# Configure to find_package()
-#-----------------------------------------------------------------------
-
-# Do NOT add this for wxWidgets. We must not use our FreeType for wxWidgets.
-# Set CMake's search path for find_*() commands.
-#list(APPEND CMAKE_PREFIX_PATH "${EXTERNAL_INSTALL_DIR}")
-
-if(ANDROID)
-#  list(APPEND CMAKE_FIND_ROOT_PATH "${EXTERNAL_INSTALL_DIR}")
-endif()
-
-
-#-----------------------------------------------------------------------
-# Set path to LibCMaker root
-#-----------------------------------------------------------------------
-
-set(libcmaker_root_DIR "${HGKamva_DIR}/cmake/libcmaker")
-set(LIBCMAKER_SRC_DIR "${libcmaker_root_DIR}/LibCMaker")
-
-list(APPEND CMAKE_MODULE_PATH
-#  "${CMAKE_CURRENT_LIST_DIR}/cmake"
-  "${libcmaker_root_DIR}"
-  "${LIBCMAKER_SRC_DIR}/cmake/modules"
-)
-
-
-#-----------------------------------------------------------------------
 # Set vars to HtmlGrapheasAppWx
 #-----------------------------------------------------------------------
 
@@ -86,30 +41,6 @@ list(APPEND CMAKE_MODULE_PATH
 #set(BUILD_SHARED_LIBS ON)
 
 # Library specific vars.
-
-
-#-----------------------------------------------------------------------
-# Build, install and find required libraries
-#-----------------------------------------------------------------------
-
-include(build_wxwidgets)
-
-
-#-----------------------------------------------------------------------
-# HtmlGrapheasKamva
-#-----------------------------------------------------------------------
-
-add_subdirectory("${HGKamva_DIR}" "${PROJECT_BINARY_DIR}/HtmlGrapheasKamva")
-
-
-
-#-----------------------------------------------------------------------
-# HtmlGrapheasKamvaWx
-#-----------------------------------------------------------------------
-
-set(HGKamvaWx_DIR "${HGKamva_DIR}/platform/wxwidgets")
-
-add_subdirectory("${HGKamvaWx_DIR}" "${PROJECT_BINARY_DIR}/HtmlGrapheasKamvaWx")
 
 
 #-----------------------------------------------------------------------

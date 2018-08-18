@@ -21,31 +21,32 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find FreeType and HarfBuzz libraries
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
+set(FT_lib_NAME      "FreeType")
+set(FT_lib_VERSION   "2.9.1")
+set(FT_lib_DIR       "${LibCMaker_libs_DIR}/LibCMaker_${FT_lib_NAME}")
+
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${FT_lib_DIR}/cmake/modules")
+
+
 #-----------------------------------------------------------------------
-# Set vars for LibCMaker_FreeType and LibCMaker_HarfBuzz
+# LibCMaker_<LibName> specific vars and options
 #-----------------------------------------------------------------------
 
 # Used in 'cmr_build_rules_harfbuzz.cmake'
-set(LIBCMAKER_FREETYPE_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_FreeType"
-)
-# To use our FindFreetype.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FREETYPE_SRC_DIR}/cmake/")
-
-set(FT_lib_VERSION    "2.9.1")
-set(FT_DOWNLOAD_DIR   "${EXTERNAL_DOWNLOAD_DIR}")
-set(FT_UNPACKED_DIR   "${EXTERNAL_UNPACKED_DIR}")
-set(FT_BUILD_DIR      "${EXTERNAL_BIN_DIR}/build_freetype")
+set(LIBCMAKER_FREETYPE_SRC_DIR ${FT_lib_DIR})
 
 set(COPY_FREETYPE_CMAKE_BUILD_SCRIPTS ON)
 
-# Library specific vars.
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
+
 set(FREETYPE_NO_DIST ON)
 
 set(FT_WITH_ZLIB OFF)
@@ -54,59 +55,35 @@ set(FT_WITH_PNG OFF)
 set(FT_WITH_HarfBuzz ON)
 
 if(FT_WITH_HarfBuzz)
-  # Used in 'cmr_build_rules_freetype.cmake'.
-  set(LIBCMAKER_HARFBUZZ_SRC_DIR
-    "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_HarfBuzz")
-  # To use our FindHarfBuzz.cmake.
-  list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_HARFBUZZ_SRC_DIR}/cmake/")
+  set(HB_lib_NAME     "HarfBuzz")
+  set(HB_lib_VERSION  "1.8.6")
+  set(HB_lib_DIR       "${LibCMaker_libs_DIR}/LibCMaker_${HB_lib_NAME}")
 
-  set(HB_lib_VERSION    "1.8.6")
-  set(HB_DOWNLOAD_DIR   "${EXTERNAL_DOWNLOAD_DIR}")
-  set(HB_UNPACKED_DIR   "${EXTERNAL_UNPACKED_DIR}")
-  set(HB_BUILD_DIR      "${EXTERNAL_BIN_DIR}/build_harfbuzz")
+  # To use our FindHarfBuzz.cmake.
+  list(APPEND CMAKE_MODULE_PATH "${HB_lib_DIR}/cmake/modules")
+
+  # Need in cmr_build_rules_freetype to build HarfBuzz.
+  set(LIBCMAKER_HARFBUZZ_SRC_DIR ${HB_lib_DIR})
+
+  # LIBCMAKER_FREETYPE_SRC_DIR needed for lib_cmaker_harfbuzz() to build
+  # HarfBuzz with FreeType.
+  # LIBCMAKER_FREETYPE_SRC_DIR is set in lib_cmaker_freetype().
 
   set(COPY_HARFBUZZ_CMAKE_BUILD_SCRIPTS ON)
 endif()
 
 
 #-----------------------------------------------------------------------
-# Build and install the FreeType (and HarfBuzz in lib_cmaker_freetype())
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-# Try to find already installed libs.
-find_package(Freetype QUIET)
-if(FT_WITH_HarfBuzz)
-  find_package(HarfBuzz QUIET)
-endif()
-
-if(NOT FREETYPE_FOUND OR (FT_WITH_HarfBuzz AND NOT HarfBuzz_FOUND))
-  if(FT_WITH_HarfBuzz)
-    cmr_print_status(
-      "FreeType or HarfBuzz are not installed, build and install them.")
-  else()
-    cmr_print_status(
-      "FreeType is not installed, build and install it.")
-  endif()
-
-  include(${LIBCMAKER_FREETYPE_SRC_DIR}/lib_cmaker_freetype.cmake)
-  lib_cmaker_freetype(
-    VERSION       ${FT_lib_VERSION}
-    DOWNLOAD_DIR  ${FT_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${FT_UNPACKED_DIR}
-    BUILD_DIR     ${FT_BUILD_DIR}
-  )
-
-  find_package(Freetype REQUIRED)
-  if(FT_WITH_HarfBuzz)
-    find_package(HarfBuzz REQUIRED)
-  endif()
-
-else()
-  if(FT_WITH_HarfBuzz)
-    cmr_print_status(
-      "FreeType and HarfBuzz are installed, skip building and installing them.")
-  else()
-    cmr_print_status(
-      "FreeType is installed, skip building and installing it.")
-  endif()
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${FT_lib_NAME}
+  VERSION         ${FT_lib_VERSION}
+  LIB_DIR         ${FT_lib_DIR}
+  REQUIRED
+  FIND_MODULE_NAME Freetype
+  NOT_USE_VERSION_IN_FIND_PACKAGE
+  CUSTOM_LOGIC_FILE ${FT_lib_DIR}/cmake/cmr_find_package_freetype_custom.cmake
+)

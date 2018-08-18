@@ -21,12 +21,6 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
-#-----------------------------------------------------------------------
-# Build, install and find Google Test library
-#-----------------------------------------------------------------------
-
 # Add this in the project's root CMakeLists.txt.
 #option(BUILD_TESTING "Build the testing tree." ON)
 #if(BUILD_TESTING)
@@ -35,27 +29,31 @@ include(cmr_print_status)
 
 
 #-----------------------------------------------------------------------
-# Set vars for LibCMaker_GoogleTest.
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-set(LIBCMAKER_GOOGLETEST_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_GoogleTest"
-)
-# To use our FindGTest.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_GOOGLETEST_SRC_DIR}/cmake")
+set(GTEST_lib_NAME      "GoogleTest")
+set(GTEST_lib_VERSION   "1.8.20180314")
+set(GTEST_lib_DIR       "${LibCMaker_libs_DIR}/LibCMaker_${GTEST_lib_NAME}")
 
-set(GOOGLETEST_lib_VERSION    "1.8.20180314")
-set(GOOGLETEST_DOWNLOAD_DIR   "${EXTERNAL_DOWNLOAD_DIR}")
-set(GOOGLETEST_UNPACKED_DIR   "${EXTERNAL_UNPACKED_DIR}")
-set(GOOGLETEST_BUILD_DIR      "${EXTERNAL_BIN_DIR}/build_googletest")
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${GTEST_lib_DIR}/cmake/modules")
 
-# Library specific vars and options.
+
+#-----------------------------------------------------------------------
+# LibCMaker_<LibName> specific vars and options
+#-----------------------------------------------------------------------
+
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
 
 #-----------------------------------------------------------------------
 # Common Google Test and Google Mock options
 #
 option(BUILD_GTEST "Builds the googletest subproject" ON)
-#Note that googlemock target already builds googletest
+# Note that googlemock target already builds googletest.
 option(BUILD_GMOCK "Builds the googlemock subproject" OFF)
 
 # BUILD_SHARED_LIBS is a standard CMake variable, but we declare it here to
@@ -65,6 +63,7 @@ option(BUILD_SHARED_LIBS "Build shared libraries (DLLs)." OFF)
 #-----------------------------------------------------------------------
 # Google Test options
 #
+
 # When other libraries are using a shared version of runtime libraries,
 # Google Test also has to use one.
 option(
@@ -88,9 +87,8 @@ option(gmock_build_tests "Build all of Google Mock's own tests." OFF)
 
 
 #-----------------------------------------------------------------------
-# Build and install the Google Test
-#-----------------------------------------------------------------------
-
+# FindGTest.cmake options
+#
 # From "FindGTest.cmake":
 #   If compiling with MSVC, this variable can be set to ``MT`` or
 #   ``MD`` (the default) to enable searching a GTest build tree
@@ -98,25 +96,16 @@ if(MSVC)
   set(GTEST_MSVC_SEARCH "MT")
 endif()
 
-# Try to find already installed lib.
-find_package(GTest QUIET)
 
-if(NOT GTEST_FOUND)
-  cmr_print_status(
-    "Google Test is not installed, build and install it.")
+#-----------------------------------------------------------------------
+# Build, install and find the library
+#-----------------------------------------------------------------------
 
-  include(
-    ${LIBCMAKER_GOOGLETEST_SRC_DIR}/lib_cmaker_googletest.cmake)
-  lib_cmaker_googletest(
-    VERSION       ${GOOGLETEST_lib_VERSION}
-    DOWNLOAD_DIR  ${GOOGLETEST_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${GOOGLETEST_UNPACKED_DIR}
-    BUILD_DIR     ${GOOGLETEST_BUILD_DIR}
-  )
-
-  find_package(GTest REQUIRED)
-
-else()
-  cmr_print_status(
-    "Google Test is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${GTEST_lib_NAME}
+  VERSION         ${GTEST_lib_VERSION}
+  LIB_DIR         ${GTEST_lib_DIR}
+  REQUIRED
+  FIND_MODULE_NAME GTest
+)

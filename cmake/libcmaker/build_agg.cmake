@@ -21,28 +21,23 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find AGG library
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
-# Set vars to LibCMaker_AGG
-#-----------------------------------------------------------------------
-
-set(LIBCMAKER_AGG_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_AGG"
-)
-# To use our FindAgg.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_AGG_SRC_DIR}/cmake")
-
+set(AGG_lib_NAME      "AGG")
 set(AGG_lib_VERSION   "2.4.128")
-set(AGG_DOWNLOAD_DIR  "${EXTERNAL_DOWNLOAD_DIR}")
-set(AGG_UNPACKED_DIR  "${EXTERNAL_UNPACKED_DIR}")
-set(AGG_BUILD_DIR     "${EXTERNAL_BIN_DIR}/build_agg")
+set(AGG_lib_DIR       "${LibCMaker_libs_DIR}/LibCMaker_${AGG_lib_NAME}")
 
-set(AGG_DIR "${EXTERNAL_INSTALL_DIR}")
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${AGG_lib_DIR}/cmake/modules")
+
+
+#-----------------------------------------------------------------------
+# LibCMaker_<LibName> specific vars and options
+#-----------------------------------------------------------------------
+
+set(AGG_DIR "${cmr_INSTALL_DIR}")
 set(ENV{AGG_DIR} "${AGG_DIR}")
 set(AGG_DIR_BIN "${AGG_DIR}/bin")
 
@@ -50,7 +45,11 @@ set(NOT_ADD_AGG_PLATFORM ON)
 set(SKIP_BUILD_AGG_EXAMPLES ON)
 set(SKIP_BUILD_AGG_MYAPP ON)
 
-# Library specific vars and options.
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
+
 option(agg_USE_GPC "Use Gpc Boolean library" OFF)
 option(agg_USE_FREETYPE "Use Freetype library" OFF)
 option(agg_USE_EXPAT "Use Expat library" OFF)
@@ -60,33 +59,20 @@ option(agg_USE_AGG2D "Agg 2D graphical context" OFF)
 option(agg_USE_DEBUG "For debug version" OFF)
 option(agg_USE_AGG2D_FREETYPE "Agg 2D graphical context uses freetype" OFF)
 
-# TODO: set ENV{FREETYPE_DIR} to AGG if agg_USE_FREETYPE==ON
-
 
 #-----------------------------------------------------------------------
-# Build and install the AGG
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-# Try to find already installed lib.
-find_package(Agg CONFIG QUIET)
-
-if(NOT Agg_FOUND)
-  cmr_print_status(
-    "AGG is not installed, build and install it.")
-
-  include(${LIBCMAKER_AGG_SRC_DIR}/lib_cmaker_agg.cmake)
-  lib_cmaker_agg(
-    VERSION       ${AGG_lib_VERSION}
-    DOWNLOAD_DIR  ${AGG_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${AGG_UNPACKED_DIR}
-    BUILD_DIR     ${AGG_BUILD_DIR}
-  )
-
-  find_package(Agg REQUIRED CONFIG)
-
-else()
-  cmr_print_status(
-    "AGG is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR     ${LibCMaker_DIR}
+  NAME              ${AGG_lib_NAME}
+  VERSION           ${AGG_lib_VERSION}
+  LIB_DIR           ${AGG_lib_DIR}
+  FIND_MODULE_NAME  Agg
+  REQUIRED
+  CONFIG
+  NOT_USE_VERSION_IN_FIND_PACKAGE
+)
 
 #include(${AGG_USE_FILE})

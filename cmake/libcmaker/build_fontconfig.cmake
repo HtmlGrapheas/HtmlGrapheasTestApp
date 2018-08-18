@@ -21,65 +21,43 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find FontConfig library
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
+set(FONTCONFIG_lib_NAME      "FontConfig")
+set(FONTCONFIG_lib_VERSION   "2.13.0")
+set(FONTCONFIG_lib_DIR "${LibCMaker_libs_DIR}/LibCMaker_${FONTCONFIG_lib_NAME}")
+
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${FONTCONFIG_lib_DIR}/cmake/modules")
+
+
 #-----------------------------------------------------------------------
-# Set vars for LibCMaker_FontConfig
+# LibCMaker_<LibName> specific vars and options
 #-----------------------------------------------------------------------
-
-# Used in 'cmr_build_rules_fontconfig.cmake'.
-set(LIBCMAKER_DIRENT_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_Dirent"
-)
-set(LIBCMAKER_EXPAT_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_Expat"
-)
-set(LIBCMAKER_FREETYPE_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_FreeType"
-)
-
-set(LIBCMAKER_FONTCONFIG_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_FontConfig"
-)
-# To use our FindFontConfig.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_FONTCONFIG_SRC_DIR}/cmake")
-
-set(FONTCONFIG_lib_VERSION    "2.13.0")
-set(FONTCONFIG_DOWNLOAD_DIR   "${EXTERNAL_DOWNLOAD_DIR}")
-set(FONTCONFIG_UNPACKED_DIR   "${EXTERNAL_UNPACKED_DIR}")
-set(FONTCONFIG_BUILD_DIR      "${EXTERNAL_BIN_DIR}/build_fontconfig")
 
 set(COPY_FONTCONFIG_CMAKE_BUILD_SCRIPTS ON)
 
-# Library specific vars and options.
+# Used in 'cmr_build_rules_fontconfig.cmake'.
+set(LIBCMAKER_DIRENT_SRC_DIR    "${LibCMaker_libs_DIR}/LibCMaker_Dirent")
+set(LIBCMAKER_EXPAT_SRC_DIR     "${LibCMaker_libs_DIR}/LibCMaker_Expat")
+set(LIBCMAKER_FREETYPE_SRC_DIR  "${LibCMaker_libs_DIR}/LibCMaker_FreeType")
 
 
 #-----------------------------------------------------------------------
-# Build and install the FontConfig
+# Library specific vars and options
 #-----------------------------------------------------------------------
 
-# Try to find already installed lib.
-find_package(FontConfig QUIET)
 
-if(NOT FONTCONFIG_FOUND)
-  cmr_print_status(
-    "FontConfig is not installed, build and install it.")
+#-----------------------------------------------------------------------
+# Build, install and find the library
+#-----------------------------------------------------------------------
 
-  include(${LIBCMAKER_FONTCONFIG_SRC_DIR}/lib_cmaker_fontconfig.cmake)
-  lib_cmaker_fontconfig(
-    VERSION       ${FONTCONFIG_lib_VERSION}
-    DOWNLOAD_DIR  ${FONTCONFIG_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${FONTCONFIG_UNPACKED_DIR}
-    BUILD_DIR     ${FONTCONFIG_BUILD_DIR}
-  )
-
-  find_package(FontConfig REQUIRED)
-
-else()
-  cmr_print_status(
-    "FontConfig is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${FONTCONFIG_lib_NAME}
+  VERSION         ${FONTCONFIG_lib_VERSION}
+  LIB_DIR         ${FONTCONFIG_lib_DIR}
+  REQUIRED
+)

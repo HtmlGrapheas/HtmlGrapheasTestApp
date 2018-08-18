@@ -21,50 +21,48 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-include(cmr_print_status)
-
 #-----------------------------------------------------------------------
-# Build, install and find ICU library
+# Lib's name, version, paths
 #-----------------------------------------------------------------------
 
-#-----------------------------------------------------------------------
-# Set vars to LibCMaker_ICU
-#-----------------------------------------------------------------------
+set(ICU_lib_NAME        "ICU")
+set(ICU_lib_VERSION     "61.1")
+set(ICU_lib_COMPONENTS  i18n uc data)
+set(ICU_lib_DIR         "${LibCMaker_libs_DIR}/LibCMaker_${ICU_lib_NAME}")
 
-set(LIBCMAKER_ICU_SRC_DIR
-  "${CMAKE_CURRENT_LIST_DIR}/LibCMaker_ICU"
-)
-# To use our FindICU.cmake.
-list(APPEND CMAKE_MODULE_PATH "${LIBCMAKER_ICU_SRC_DIR}/cmake")
+# To use our Find<LibName>.cmake.
+list(APPEND CMAKE_MODULE_PATH "${ICU_lib_DIR}/cmake/modules")
 
-set(ICU_lib_VERSION   "61.1")
 if(BUILD_FOR_WINXP OR CMAKE_GENERATOR_TOOLSET STREQUAL "v141_xp")
   # This is the last ICU4C release that works on Windows XP and Windows Vista.
-  set(ICU_lib_VERSION   "58.2")
+  set(ICU_lib_VERSION "58.2")
 endif()
-set(ICU_DOWNLOAD_DIR  "${EXTERNAL_DOWNLOAD_DIR}")
-set(ICU_UNPACKED_DIR  "${EXTERNAL_UNPACKED_DIR}")
-set(ICU_BUILD_DIR     "${EXTERNAL_BIN_DIR}/build_icu")
+
+
+#-----------------------------------------------------------------------
+# LibCMaker_<LibName> specific vars and options
+#-----------------------------------------------------------------------
 
 set(COPY_ICU_CMAKE_BUILD_SCRIPTS ON)
 
-# Library specific vars and options.
+
+#-----------------------------------------------------------------------
+# Library specific vars and options
+#-----------------------------------------------------------------------
 
 # Enable cross compiling
 set(ICU_CROSS_COMPILING OFF)
-if(IOS OR ANDROID OR WINDOWS_STORE)
-  set(ICU_CROSS_COMPILING ON)
-endif()
 # Specify an absolute path to the build directory of an ICU built for the current platform
 set(ICU_CROSS_BUILDROOT "")
 if(ICU_CROSS_COMPILING)
-  if(NOT HOST_TOOLS_BUILD_DIR)
+  if(NOT cmr_HOST_BUILD_DIR)
     cmr_print_error(
-      "Please set HOST_TOOLS_BUILD_DIR with path to built host tools to cross compilation."
+      "Please set cmr_HOST_BUILD_DIR with path to built host tools to cross compilation."
     )
   endif()
+  # TODO:
   set(ICU_CROSS_BUILDROOT
-    "${HOST_TOOLS_BUILD_DIR}/external/build/build_icu_host_tools/icu-${ICU_lib_VERSION}/source"
+    "${cmr_HOST_BUILD_DIR}/build_${ICU_lib_NAME}/icu-${ICU_lib_VERSION}/source"
   )
 endif()
 # Compile with strict compiler options
@@ -85,9 +83,6 @@ set(ICU_DISABLE_DYLOAD OFF)
 set(ICU_ENABLE_RPATH OFF)
 # Build ICU extras
 set(ICU_ENABLE_EXTRAS OFF) # TODO: not released
-if(ICU_CROSS_COMPILING)
-  set(ICU_ENABLE_EXTRAS OFF)
-endif()
 # Build ICU's icuio library
 set(ICU_ENABLE_ICUIO ON)
 # Build ICU's Paragraph Layout library. icu-le-hb must be available via find_package(icu-le-hb). See http://harfbuzz.org
@@ -110,27 +105,16 @@ set(ICU_ENABLE_SAMPLES OFF) # TODO: not released
 
 
 #-----------------------------------------------------------------------
-# Build and install the ICU
+# Build, install and find the library
 #-----------------------------------------------------------------------
 
-# Try to find already installed lib.
-find_package(ICU ${ICU_lib_VERSION} CONFIG QUIET)
+# TODO: build by COMPONENTS in find_package()
 
-if(NOT ICU_FOUND)
-  cmr_print_status(
-    "ICU is not installed, build and install it.")
-
-  include(${LIBCMAKER_ICU_SRC_DIR}/lib_cmaker_icu.cmake)
-  lib_cmaker_icu(
-    VERSION       ${ICU_lib_VERSION}
-    DOWNLOAD_DIR  ${ICU_DOWNLOAD_DIR}
-    UNPACKED_DIR  ${ICU_UNPACKED_DIR}
-    BUILD_DIR     ${ICU_BUILD_DIR}
-  )
-
-  find_package(ICU ${ICU_lib_VERSION} REQUIRED CONFIG)
-
-else()
-  cmr_print_status(
-    "ICU is installed, skip building and installing it.")
-endif()
+cmr_find_package(
+  LibCMaker_DIR   ${LibCMaker_DIR}
+  NAME            ${ICU_lib_NAME}
+  VERSION         ${ICU_lib_VERSION}
+  COMPONENTS      ${ICU_lib_COMPONENTS}
+  LIB_DIR         ${ICU_lib_DIR}
+  REQUIRED
+)
