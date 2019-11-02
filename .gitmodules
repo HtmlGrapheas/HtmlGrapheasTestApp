@@ -1,3 +1,15 @@
+[submodule "libs/AndroidLogcatStdouts"]
+	path = libs/AndroidLogcatStdouts
+	url = git@github.com:NFeoTools/AndroidLogcatStdouts.git
+[submodule "libs/HtmlGrapheas"]
+	path = libs/HtmlGrapheas
+	url = git@github.com:HtmlGrapheas/HtmlGrapheas.git
+[submodule "libs/HtmlGrapheasKamva"]
+	path = libs/HtmlGrapheasKamva
+	url = git@github.com:HtmlGrapheas/HtmlGrapheasKamva.git
+[submodule "libs/LibCMaker"]
+	path = libs/LibCMaker
+	url = git@github.com:LibCMaker/LibCMaker.git
 [submodule "libs/LibCMaker_AGG"]
 	path = libs/LibCMaker_AGG
 	url = git@github.com:LibCMaker/LibCMaker_AGG.git
@@ -25,3 +37,6 @@
 [submodule "libs/LibCMaker_wxWidgets"]
 	path = libs/LibCMaker_wxWidgets
 	url = git@github.com:LibCMaker/LibCMaker_wxWidgets.git
+[submodule "libs/litehtml"]
+	path = libs/litehtml
+	url = git@github.com:HtmlGrapheas/litehtml.git
