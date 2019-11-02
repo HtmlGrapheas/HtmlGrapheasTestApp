@@ -1,0 +1,27 @@
+[submodule "libs/LibCMaker_AGG"]
+	path = libs/LibCMaker_AGG
+	url = git@github.com:LibCMaker/LibCMaker_AGG.git
+[submodule "libs/LibCMaker_Dirent"]
+	path = libs/LibCMaker_Dirent
+	url = git@github.com:LibCMaker/LibCMaker_Dirent.git
+[submodule "libs/LibCMaker_Expat"]
+	path = libs/LibCMaker_Expat
+	url = git@github.com:LibCMaker/LibCMaker_Expat.git
+[submodule "libs/LibCMaker_FontConfig"]
+	path = libs/LibCMaker_FontConfig
+	url = git@github.com:LibCMaker/LibCMaker_FontConfig.git
+[submodule "libs/LibCMaker_FreeType"]
+	path = libs/LibCMaker_FreeType
+	url = git@github.com:LibCMaker/LibCMaker_FreeType.git
+[submodule "libs/LibCMaker_GoogleTest"]
+	path = libs/LibCMaker_GoogleTest
+	url = git@github.com:LibCMaker/LibCMaker_GoogleTest.git
+[submodule "libs/LibCMaker_HarfBuzz"]
+	path = libs/LibCMaker_HarfBuzz
+	url = git@github.com:LibCMaker/LibCMaker_HarfBuzz.git
+[submodule "libs/LibCMaker_STLCache"]
+	path = libs/LibCMaker_STLCache
+	url = git@github.com:LibCMaker/LibCMaker_STLCache.git
+[submodule "libs/LibCMaker_wxWidgets"]
+	path = libs/LibCMaker_wxWidgets
+	url = git@github.com:LibCMaker/LibCMaker_wxWidgets.git
