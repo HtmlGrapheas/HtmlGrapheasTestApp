@@ -186,7 +186,7 @@ include(cmr_find_package)
 # Download, configure, build, install and find the required libraries
 #-----------------------------------------------------------------------
 
-set(FT_WITH_HARFBUZZ ON)
+option(FT_WITH_HARFBUZZ "Improve auto-hinting of OpenType fonts." ON)
 
 option(BUILD_TESTING "Build the testing tree." OFF)
 if(BUILD_TESTING)
