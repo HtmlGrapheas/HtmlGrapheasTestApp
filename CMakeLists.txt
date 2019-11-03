@@ -186,6 +186,8 @@ include(cmr_find_package)
 # Download, configure, build, install and find the required libraries
 #-----------------------------------------------------------------------
 
+set(FT_WITH_HARFBUZZ ON)
+
 option(BUILD_TESTING "Build the testing tree." OFF)
 if(BUILD_TESTING)
   enable_testing()
@@ -197,9 +199,7 @@ if(MSVC)
   include(${LibCMaker_LIB_DIR}/LibCMaker_Dirent/cmr_build_dirent.cmake)
 endif()
 include(${LibCMaker_LIB_DIR}/LibCMaker_Expat/cmr_build_expat.cmake)
-if(FT_WITH_HARFBUZZ)
-#  include(${LibCMaker_LIB_DIR}/LibCMaker_HarfBuzz/cmr_build_harfbuzz.cmake)
-endif()
+#include(${LibCMaker_LIB_DIR}/LibCMaker_HarfBuzz/cmr_build_harfbuzz.cmake)
 include(
   ${LibCMaker_LIB_DIR}/LibCMaker_FreeType/cmr_build_freetype_with_harfbuzz.cmake
 )
