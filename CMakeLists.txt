@@ -205,8 +205,11 @@ include(
 )
 include(${LibCMaker_LIB_DIR}/LibCMaker_FontConfig/cmr_build_fontconfig.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_AGG/cmr_build_agg.cmake)
-# TODO: # Must be 1st, before the other LibCMaker libs.
-include(${LibCMaker_LIB_DIR}/LibCMaker_wxWidgets/cmr_build_wxwidgets.cmake)
+
+if(WIN32 OR (UNIX AND NOT ANDROID) OR (APPLE AND NOT IOS))
+  set(wxWidgets_PLATFORM ON)
+  include(${LibCMaker_LIB_DIR}/LibCMaker_wxWidgets/cmr_build_wxwidgets.cmake)
+endif()
 
 
 #-----------------------------------------------------------------------
@@ -270,7 +273,7 @@ add_subdirectory("${HGKamva_DIR}" "${build_libs_DIR}/HtmlGrapheasKamva")
 # where <${CMAKE_INSTALL_PREFIX}> is path which is used
 # as value for CMAKE_INSTALL_PREFIX.
 
-if(WIN32 OR (UNIX AND NOT ANDROID) OR (APPLE AND NOT IOS))
+if(wxWidgets_PLATFORM)
   # HtmlGrapheasKamvaWx
   set(HGKamvaWx_DIR "${HGKamva_DIR}/platform/wxwidgets")
   add_subdirectory("${HGKamvaWx_DIR}" "${build_libs_DIR}/HtmlGrapheasKamvaWx")
