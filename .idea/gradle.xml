@@ -3,17 +3,21 @@
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
+        <compositeConfiguration>
+          <compositeBuild compositeDefinitionSource="SCRIPT" />
+        </compositeConfiguration>
         <option name="distributionType" value="DEFAULT_WRAPPED" />
         <option name="externalProjectPath" value="$PROJECT_DIR$" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/HtmlGrapheasKamva" />
-            <option value="$PROJECT_DIR$/external/android/AndroidLogcatStdouts" />
+            <option value="$PROJECT_DIR$/libs/AndroidLogcatStdouts" />
+            <option value="$PROJECT_DIR$/libs/HtmlGrapheasKamva" />
             <option value="$PROJECT_DIR$/platform/android/HtmlGrapheasApp" />
           </set>
         </option>
         <option name="resolveModulePerSourceSet" value="false" />
+        <option name="testRunner" value="PLATFORM" />
       </GradleProjectSettings>
     </option>
   </component>
