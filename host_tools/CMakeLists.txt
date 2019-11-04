@@ -21,33 +21,36 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.4)
 
 # FindThreads work in environments, where only CXX is enabled, since CMake 3.4.
 project(HtmlGrapheasKamvaHostTools CXX C)
 set(lib_NAME "hgkamva_host_tools")
 
+option(CMAKE_VERBOSE_MAKEFILE "CMAKE_VERBOSE_MAKEFILE" OFF)
+option(cmr_PRINT_DEBUG "cmr_PRINT_DEBUG" OFF)
+
+
+#-----------------------------------------------------------------------
+# Set path vars
+#-----------------------------------------------------------------------
+
 if(NOT HGMainProject_DIR)
   message(FATAL_ERROR
     "Please set HGMainProject_DIR with path to main project root directory.")
-endif()
-if(NOT LibCMaker_DIR)
-  message(FATAL_ERROR
-    "Please set LibCMaker_DIR with path to LibCMaker root directory.")
 endif()
 if(NOT HGKamva_DIR)
   message(FATAL_ERROR
     "Please set HGKamva_DIR with path to HtmlGrapheasKamva library.")
 endif()
+if(NOT LibCMaker_LIB_DIR)
+  message(FATAL_ERROR
+    "Please set LibCMaker_LIB_DIR with path to LibCMaker's libraries directory.")
+endif()
 if(NOT HOST_TOOLS_STAMP_FILE_NAME)
   message(FATAL_ERROR
     "Please set HOST_TOOLS_STAMP_FILE_NAME with name of stamp file.")
 endif()
-
-
-#-----------------------------------------------------------------------
-# Configure external libs directories
-#-----------------------------------------------------------------------
 
 if(NOT cmr_DOWNLOAD_DIR)
   set(cmr_DOWNLOAD_DIR "${CMAKE_CURRENT_LIST_DIR}/.downloads")
@@ -63,48 +66,33 @@ set(cmr_INSTALL_DIR "${CMAKE_INSTALL_PREFIX}")
 
 
 #-----------------------------------------------------------------------
-# Set path to LibCMaker root
-#-----------------------------------------------------------------------
-
-list(APPEND CMAKE_MODULE_PATH
-  "${HGMainProject_DIR}/cmake/libcmaker"
-  "${LibCMaker_DIR}/cmake"
-)
-
-
-#-----------------------------------------------------------------------
 # Configure to find_package()
 #-----------------------------------------------------------------------
 
 # Set CMake's search path for find_*() commands.
 list(APPEND CMAKE_PREFIX_PATH "${cmr_INSTALL_DIR}")
 
-if(ANDROID)
+if(ANDROID OR IOS)
   list(APPEND CMAKE_FIND_ROOT_PATH "${cmr_INSTALL_DIR}")
 endif()
 
 
 #-----------------------------------------------------------------------
-# Set vars to HtmlGrapheasKamvaHostTools
+# LibCMaker settings
 #-----------------------------------------------------------------------
 
-
-#-----------------------------------------------------------------------
-# Build, install and find required libraries
-#-----------------------------------------------------------------------
-
-# Used by ICU.
-find_package(Threads REQUIRED)
-
+set(LibCMaker_DIR "${LibCMaker_LIB_DIR}/LibCMaker")
+list(APPEND CMAKE_MODULE_PATH "${LibCMaker_DIR}/cmake")
 include(cmr_find_package)
 
-set(LibCMaker_libs_DIR "${LibCMaker_DIR}/libs")
 
-include(build_icu_host_tools)
+#-----------------------------------------------------------------------
+# Download, configure, build, install and find the required libraries
+#-----------------------------------------------------------------------
 
 
 #-----------------------------------------------------------------------
-# HtmlGrapheasKamvaHostTools
+# Stub target
 #-----------------------------------------------------------------------
 
 add_custom_target(${lib_NAME} ALL
