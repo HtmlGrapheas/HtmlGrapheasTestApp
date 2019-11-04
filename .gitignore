@@ -50,4 +50,4 @@ build/
 
 # Main project
 .downloads/
-build*/
+build_*/
