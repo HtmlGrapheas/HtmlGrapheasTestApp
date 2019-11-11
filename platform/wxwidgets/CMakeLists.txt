@@ -21,7 +21,14 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.3)
+cmake_minimum_required(VERSION 3.8)
+# C++17 compiler:
+#   GCC 8
+#   Clang 8 (Android NDK r19)
+#   Apple Clang 11.0.0, Xcode 11.0
+#   MSVC 19.15, VS 2017 15.8
+# See: https://en.cppreference.com/w/cpp/compiler_support
+
 
 project(HtmlGrapheasAppWx CXX)
 
@@ -66,7 +73,7 @@ endif()
 
 add_executable(${app_NAME} ${WIN32GUI} "")
 set_target_properties(${app_NAME} PROPERTIES
-  CXX_STANDARD 11
+  CXX_STANDARD 17
   C_STANDARD 11
 )
 set_property(TARGET ${app_NAME}

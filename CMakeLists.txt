@@ -21,14 +21,22 @@
 #    along with this program. If not, see <http://www.gnu.org/licenses/>.
 # ****************************************************************************
 
-cmake_minimum_required(VERSION 3.4)
+cmake_minimum_required(VERSION 3.8)
+# C++17 compiler:
+#   GCC 8
+#   Clang 8 (Android NDK r19)
+#   Apple Clang 11.0.0, Xcode 11.0
+#   MSVC 19.15, VS 2017 15.8
+# See: https://en.cppreference.com/w/cpp/compiler_support
 
 # FindThreads work in environments, where only CXX is enabled, since CMake 3.4.
 project(HtmlGrapheasProject CXX C)
 
+option(BUILD_SHARED_LIBS "BUILD_SHARED_LIBS" OFF)
+option(HG_AGG_CONTAINER "ON - AGG, OFF - Cairo" OFF)
+
 option(CMAKE_VERBOSE_MAKEFILE "CMAKE_VERBOSE_MAKEFILE" OFF)
 option(cmr_PRINT_DEBUG "cmr_PRINT_DEBUG" OFF)
-
 
 #-----------------------------------------------------------------------
 # Compiler flags
@@ -186,7 +194,15 @@ include(cmr_find_package)
 # Download, configure, build, install and find the required libraries
 #-----------------------------------------------------------------------
 
+# TODO: In LibCMaker:
+# 1. Make vars in Find*.cmake files as advanced.
+# 2. Print "Found: <lib path>" from all Find*.cmake files.
+# 3. Add Libname::Libname targets to all Find*.cmake files.
+
 option(FT_WITH_HARFBUZZ "Improve auto-hinting of OpenType fonts." ON)
+# TODO:
+#option(FT_WITH_ZLIB "Use system zlib instead of internal library." OFF)
+#option(FT_WITH_PNG "Support PNG compressed OpenType embedded bitmaps." OFF)
 
 option(BUILD_TESTING "Build the testing tree." OFF)
 if(BUILD_TESTING)
@@ -194,6 +210,16 @@ if(BUILD_TESTING)
   include(${LibCMaker_LIB_DIR}/LibCMaker_GoogleTest/cmr_build_googletest.cmake)
 endif()
 
+# wxWidgets must be 1st, before Cairo and other libs
+if(WIN32 OR (UNIX AND NOT ANDROID) OR (APPLE AND NOT IOS))
+  set(wxWidgets_PLATFORM ON)
+  include(${LibCMaker_LIB_DIR}/LibCMaker_wxWidgets/cmr_build_wxwidgets.cmake)
+endif()
+
+find_package(Threads)  # Used in Cairo
+
+include(${LibCMaker_LIB_DIR}/LibCMaker_zlib/cmr_build_zlib.cmake)
+include(${LibCMaker_LIB_DIR}/LibCMaker_libpng/cmr_build_libpng.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_STLCache/cmr_build_stlcache.cmake)
 if(MSVC)
   include(${LibCMaker_LIB_DIR}/LibCMaker_Dirent/cmr_build_dirent.cmake)
@@ -204,11 +230,10 @@ include(
   ${LibCMaker_LIB_DIR}/LibCMaker_FreeType/cmr_build_freetype_with_harfbuzz.cmake
 )
 include(${LibCMaker_LIB_DIR}/LibCMaker_FontConfig/cmr_build_fontconfig.cmake)
-include(${LibCMaker_LIB_DIR}/LibCMaker_AGG/cmr_build_agg.cmake)
-
-if(WIN32 OR (UNIX AND NOT ANDROID) OR (APPLE AND NOT IOS))
-  set(wxWidgets_PLATFORM ON)
-  include(${LibCMaker_LIB_DIR}/LibCMaker_wxWidgets/cmr_build_wxwidgets.cmake)
+include(${LibCMaker_LIB_DIR}/LibCMaker_Pixman/cmr_build_pixman.cmake)
+include(${LibCMaker_LIB_DIR}/LibCMaker_Cairo/cmr_build_cairo.cmake)
+if(HG_AGG_CONTAINER)
+  include(${LibCMaker_LIB_DIR}/LibCMaker_AGG/cmr_build_agg.cmake)
 endif()
 
 
