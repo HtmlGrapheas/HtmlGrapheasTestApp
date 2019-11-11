@@ -51,3 +51,4 @@ build/
 # Main project
 .downloads/
 build_*/
+build-*/
