@@ -28,6 +28,9 @@
 *.out
 *.app
 
+# QtCreator project file
+CMakeLists.txt.user*
+
 # Eclipse
 .externalToolBuilders/
 .settings/
