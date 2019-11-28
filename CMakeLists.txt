@@ -33,7 +33,6 @@ cmake_minimum_required(VERSION 3.8)
 project(HtmlGrapheasProject CXX C)
 
 option(BUILD_SHARED_LIBS "BUILD_SHARED_LIBS" OFF)
-option(HG_AGG_CONTAINER "ON - AGG, OFF - Cairo" OFF)
 
 option(CMAKE_VERBOSE_MAKEFILE "CMAKE_VERBOSE_MAKEFILE" OFF)
 option(cmr_PRINT_DEBUG "cmr_PRINT_DEBUG" OFF)
@@ -232,9 +231,6 @@ include(
 include(${LibCMaker_LIB_DIR}/LibCMaker_FontConfig/cmr_build_fontconfig.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_Pixman/cmr_build_pixman.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_Cairo/cmr_build_cairo.cmake)
-if(HG_AGG_CONTAINER)
-  include(${LibCMaker_LIB_DIR}/LibCMaker_AGG/cmr_build_agg.cmake)
-endif()
 
 
 #-----------------------------------------------------------------------
