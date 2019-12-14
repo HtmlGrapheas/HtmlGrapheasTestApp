@@ -127,9 +127,7 @@ MainFrame::MainFrame(wxFrame* parent,
   updateStatus(_("Html Grapheas status bar."));
 }
 
-MainFrame::~MainFrame()
-{
-}
+MainFrame::~MainFrame() {}
 
 void MainFrame::onClose(wxCloseEvent& WXUNUSED(event))
 {
