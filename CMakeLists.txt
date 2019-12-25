@@ -231,6 +231,11 @@ include(
 include(${LibCMaker_LIB_DIR}/LibCMaker_FontConfig/cmr_build_fontconfig.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_Pixman/cmr_build_pixman.cmake)
 include(${LibCMaker_LIB_DIR}/LibCMaker_Cairo/cmr_build_cairo.cmake)
+if(APPLE)
+  set(USE_BOOST ON)
+  option(BOOST_WITHOUT_ICU "Disable Unicode/ICU support in Regex" ON)
+  include(${LibCMaker_LIB_DIR}/LibCMaker_Boost/cmr_build_boost.cmake)
+endif()
 
 
 #-----------------------------------------------------------------------
