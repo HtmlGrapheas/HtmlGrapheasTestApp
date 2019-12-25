@@ -13,6 +13,9 @@
 [submodule "libs/LibCMaker_AGG"]
   path = libs/LibCMaker_AGG
   url = git@github.com:LibCMaker/LibCMaker_AGG.git
+[submodule "libs/LibCMaker_Boost"]
+  path = libs/LibCMaker_Boost
+  url = git@github.com:LibCMaker/LibCMaker_Boost.git
 [submodule "libs/LibCMaker_Cairo"]
   path = libs/LibCMaker_Cairo
   url = git@github.com:LibCMaker/LibCMaker_Cairo.git
